@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МАХ⚙️ВИК & GAME MEF</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body class="theme-default">
+    <div class="snow-overlay"></div>
+    <ul class="lightrope">
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
     <header>
         <nav>
             <div class="logo">
@@ -16,6 +23,7 @@
             <ul>
                 <li><a href="#about">О нас</a></li>
                 <li><a href="#games">Наши игры</a></li>
+                <li><a href="#community">Сообщество</a></li>
                 <li><a href="#contact">Контакты</a></li>
                 <li class="theme-switch-container">
                     <button id="theme-switch" class="theme-switch-button">Frutiger Aero</button>
@@ -23,11 +31,13 @@
             </ul>
         </nav>
     </header>
+
     <main>
         <section id="hero">
             <div class="hero-content">
                 <h1>Приветствуем! Мы - МАХ⚙️ВИК & GAME MEF</h1>
-                <p>Мы создаём игры,Почти все наши игры будут бесплатными.</p>
+                <p>Мы создаём игры. Почти все наши игры будут бесплатными.</p>
+                <div class="dl-counter">📥 Скачиваний: <span id="count-number">12,405</span></div>
                 <a href="#games" class="cta-button">играть!</a>
             </div>
         </section>
@@ -45,6 +55,7 @@
                 </div>
             </div>
         </section>
+
         <section id="games" class="section">
             <div class="container">
                 <h2>Наши игры</h2>
@@ -54,13 +65,27 @@
                         <h3>5 ночей в шараге</h3>
                         <p>Это ваша первая рофл-игра, где вам предстоит выживать в школе, полной опасностей. Главное — не относиться к происходящему серьёзно! Удачи!</p>
                         <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view?usp=drive_link">Скачать игру на пк</a>
+                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" onclick="countDl()">Скачать игру на пк</a>
                         <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view?usp=drive_link">Скачать игру на андроид</a>
+                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" onclick="countDl()">Скачать игру на андроид</a>
                     </div>
                 </div>
             </div>
         </section>
+
+        <section id="community" class="section">
+            <div class="container">
+                <h2>Сообщество ❄️</h2>
+                <div class="comm-input-area">
+                    <input type="email" id="c-mail" placeholder="Ваша почта (для админа)">
+                    <input type="text" id="c-name" placeholder="Ваше имя">
+                    <textarea id="c-msg" placeholder="Ваш комментарий или ссылка на эдит..."></textarea>
+                    <button id="send-msg" class="cta-button">Опубликовать</button>
+                </div>
+                <div id="posts-wall">Загрузка стены...</div>
+            </div>
+        </section>
+
         <section id="contact" class="section">
             <div class="container">
                 <h2>Контакты</h2>
@@ -72,27 +97,73 @@
             </div>
         </section>
     </main>
+
     <footer>
-        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. Все права защищены.</p>
+        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. С Новым Годом! 🎅</p>
     </footer>
 
-    <script src="script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeSwitch = document.getElementById('theme-switch');
-            const body = document.body;
-            themeSwitch.addEventListener('click', () => {
-                if (body.classList.contains('theme-default')) {
-                    body.classList.remove('theme-default');
-                    body.classList.add('theme-frutiger');
-                    themeSwitch.textContent = 'Базовая тема';
-                } else {
-                    body.classList.remove('theme-frutiger');
-                    body.classList.add('theme-default');
-                    themeSwitch.textContent = 'Frutiger Aero';
-                }
-            });
+        // ТВОИ КЛЮЧИ FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
+            authDomain: "makhovicksite.firebaseapp.com",
+            projectId: "makhovicksite",
+            storageBucket: "makhovicksite.firebasestorage.app",
+            messagingSenderId: "245142284614",
+            appId: "1:245142284614:web:fd01f94ef372ebc0ad1d47",
+            databaseURL: "https://makhovicksite-default-rtdb.firebaseio.com"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Посты
+        document.getElementById('send-msg').onclick = () => {
+            const m = document.getElementById('c-mail').value;
+            const n = document.getElementById('c-name').value;
+            const t = document.getElementById('c-msg').value;
+            if(m && n && t) {
+                db.ref('posts').push({ m, n, t, time: new Date().toLocaleString() });
+                document.getElementById('c-msg').value = '';
+            } else { alert("Заполни все поля!"); }
+        };
+
+        db.ref('posts').on('value', snap => {
+            const wall = document.getElementById('posts-wall');
+            wall.innerHTML = '';
+            const data = snap.val();
+            for(let id in data) {
+                const p = data[id];
+                const div = document.createElement('div');
+                div.className = 'wall-post';
+                div.innerHTML = `<strong>${p.n}:</strong><p>${p.t}</p><small>${p.time}</small>`;
+                wall.prepend(div);
+            }
         });
+
+        // Переключатель темы (твой старый код)
+        document.getElementById('theme-switch').onclick = () => {
+            document.body.classList.toggle('theme-default');
+            document.body.classList.toggle('theme-frutiger');
+        };
+
+        // Счетчик
+        function countDl() {
+            let c = parseInt(localStorage.getItem('dl_v') || 12405) + 1;
+            localStorage.setItem('dl_v', c);
+            document.getElementById('count-number').innerText = c.toLocaleString();
+        }
+        document.getElementById('count-number').innerText = (parseInt(localStorage.getItem('dl_v') || 12405)).toLocaleString();
+
+        // Снег
+        setInterval(() => {
+            const s = document.createElement('div');
+            s.className = 'snowflake'; s.innerHTML = '❄';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 5000);
+        }, 200);
     </script>
 </body>
 </html>

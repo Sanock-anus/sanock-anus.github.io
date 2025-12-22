@@ -1,63 +1,60 @@
-/* Новогодние правки и сообщество */
-#snow-container {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 9999;
+/* ВАЖНО: Добавь это в начало своего style.css */
+body {
+    background-color: #1a1a1a; /* Возвращаем темный фон */
+    color: #ecf0f1;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
-.snowflake {
-    position: absolute;
-    top: -20px;
-    color: white;
-    font-size: 1.2rem;
-    animation: fall linear forwards;
+.logo-img {
+    height: 45px; /* Фиксируем размер логотипов в шапке */
+    width: auto;
 }
 
-@keyframes fall {
-    to { transform: translateY(105vh) rotate(360deg); }
+.about-logo img {
+    max-width: 300px; /* Фиксируем картинку в "О нас" */
+    height: auto;
+    border-radius: 10px;
 }
 
-.counter-display {
-    background: rgba(230, 126, 34, 0.2);
-    padding: 5px 15px;
-    border-radius: 20px;
-    margin: 10px 0;
-    display: inline-block;
-    border: 1px solid #e67e22;
+.game-card img {
+    width: 100%; /* Картинка игры по ширине карточки */
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
 }
 
-.comm-box {
-    background: rgba(255,255,255,0.05);
+/* Стили для Сообщества */
+.post-form {
+    background: #2c3e50;
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid #e67e22;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
-
-.comm-box input, .comm-box textarea {
+.post-form input, .post-form textarea {
     width: 100%;
-    background: #333;
-    border: 1px solid #444;
-    color: white;
-    padding: 10px;
     margin-bottom: 10px;
+    padding: 10px;
     border-radius: 5px;
+    border: none;
     box-sizing: border-box;
 }
-
 .post-item {
-    background: #2c3e50;
+    background: #1a1a1a;
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 8px;
-    text-align: left;
     border-left: 4px solid #e67e22;
+    text-align: left;
 }
 
-.dl-btn {
-    color: #e67e22;
-    text-decoration: underline;
-    font-weight: bold;
+/* Снежинки */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear forwards;
 }
+@keyframes fall { to { transform: translateY(105vh); } }

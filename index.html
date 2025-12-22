@@ -6,6 +6,9 @@
     <title>НОВОГОДНИЙ МАХ⚙️ВИК & GAME MEF</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body class="theme-default">
     <ul class="lightrope">
@@ -62,20 +65,17 @@
         <section id="community" class="section">
             <div class="container">
                 <h2>Сообщество ❄️</h2>
-                <p>Делитесь своими эдитами, видео и комментариями!</p>
+                <p>Делитесь видео, эдитами и комментариями. Удалять может только автор (по почте) или Админ.</p>
                 
                 <div class="post-form">
+                    <input type="email" id="user-email" placeholder="Твоя почта (для контроля поста)">
                     <input type="text" id="user-name" placeholder="Твое имя">
                     <textarea id="post-text" placeholder="Напиши что-нибудь или вставь ссылку на видео..."></textarea>
                     <button id="submit-post" class="cta-button">Опубликовать</button>
                 </div>
 
                 <div id="posts-container">
-                    <div class="post">
-                        <strong>Админ:</strong>
-                        <p>Ребята, выкладывайте сюда свои прохождения "5 ночей в шараге"!</p>
-                        <span class="post-date">22.12.2025</span>
-                    </div>
+                    <p style="text-align:center;">Загрузка стены сообщества...</p>
                 </div>
             </div>
         </section>
@@ -96,6 +96,88 @@
     </footer>
 
     <script>
+        // --- 1. НАСТРОЙКА FIREBASE ---
+        // Замени эти данные на свои из консоли Firebase (Project Settings -> Config)
+        const firebaseConfig = {
+            apiKey: "ВАШ_API_KEY",
+            authDomain: "vash-proekt.firebaseapp.com",
+            databaseURL: "https://vash-proekt-default-rtdb.firebaseio.com",
+            projectId: "vash-proekt",
+            storageBucket: "vash-proekt.appspot.com",
+            messagingSenderId: "12345",
+            appId: "1:12345:web:12345"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const adminEmail = "sashaonicum@gmail.com";
+
+        // --- 2. ЛОГИКА СООБЩЕСТВА ---
+
+        // Публикация
+        document.getElementById('submit-post').addEventListener('click', () => {
+            const email = document.getElementById('user-email').value;
+            const name = document.getElementById('user-name').value;
+            const text = document.getElementById('post-text').value;
+            
+            if(email && name && text) {
+                db.ref('posts').push({
+                    email: email,
+                    name: name,
+                    text: text,
+                    date: new Date().toLocaleString()
+                });
+                document.getElementById('post-text').value = '';
+            } else {
+                alert('Заполни все поля (Почта, Имя и Текст)!');
+            }
+        });
+
+        // Отображение постов в реальном времени
+        db.ref('posts').on('value', (snapshot) => {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+            const data = snapshot.val();
+            
+            for(let id in data) {
+                const post = data[id];
+                const div = document.createElement('div');
+                div.className = 'post';
+                
+                // Проверка на видео (YouTube)
+                let videoHtml = '';
+                if(post.text.includes('youtube.com/watch?v=')) {
+                    const vidId = post.text.split('v=')[1].split('&')[0];
+                    videoHtml = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${vidId}" frameborder="0" allowfullscreen></iframe>`;
+                }
+
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <strong>${post.name}:</strong>
+                        <button onclick="deletePost('${id}', '${post.email}')" style="background:none; border:none; cursor:pointer; color:red;">❌</button>
+                    </div>
+                    <p>${post.text}</p>
+                    ${videoHtml}
+                    <span class="post-date">${post.date}</span>
+                `;
+                container.prepend(div);
+            }
+        });
+
+        // Удаление (только админ или автор)
+        window.deletePost = function(postId, postOwnerEmail) {
+            const currentEmail = document.getElementById('user-email').value;
+            if(currentEmail === adminEmail || currentEmail === postOwnerEmail) {
+                if(confirm('Удалить этот пост?')) {
+                    db.ref('posts/' + postId).remove();
+                }
+            } else {
+                alert('Ошибка доступа! Введите свою почту в поле выше. Удалять может только автор или sashaonicum@gmail.com');
+            }
+        }
+
+        // --- 3. ОСТАЛЬНЫЕ ФУНКЦИИ ---
+
         // Смена темы
         document.getElementById('theme-switch').addEventListener('click', () => {
             const body = document.body;
@@ -108,36 +190,17 @@
             }
         });
 
-        // Счетчик скачиваний (имитация)
+        // Счетчик скачиваний
         function updateCounter() {
             let count = parseInt(localStorage.getItem('downloads') || 12405);
             count++;
             localStorage.setItem('downloads', count);
             document.getElementById('count-number').textContent = count.toLocaleString();
-            alert('Спасибо за скачивание! Счастливого Нового года!');
+            alert('Спасибо за скачивание! С Новым годом!');
         }
         document.getElementById('count-number').textContent = parseInt(localStorage.getItem('downloads') || 12405).toLocaleString();
 
-        // Сообщество (простая логика добавления)
-        document.getElementById('submit-post').addEventListener('click', () => {
-            const name = document.getElementById('user-name').value;
-            const text = document.getElementById('post-text').value;
-            
-            if(name && text) {
-                const container = document.getElementById('posts-container');
-                const post = document.createElement('div');
-                post.className = 'post';
-                post.innerHTML = `<strong>${name}:</strong><p>${text}</p><span class="post-date">${new Date().toLocaleDateString()}</span>`;
-                container.prepend(post);
-                
-                document.getElementById('user-name').value = '';
-                document.getElementById('post-text').value = '';
-            } else {
-                alert('Заполни все поля!');
-            }
-        });
-
-        // Создание снежинок
+        // Снег
         function createSnow() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');

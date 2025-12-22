@@ -20,7 +20,8 @@
             <ul>
                 <li><a href="#about">О нас</a></li>
                 <li><a href="#games">Наши игры</a></li>
-                <li><a href="#community">Сообщество</a></li> <li><a href="#contact">Контакты</a></li>
+                <li><a href="#community">Сообщество</a></li>
+                <li><a href="#contact">Контакты</a></li>
                 <li class="theme-switch-container">
                     <button id="theme-switch" class="theme-switch-button">Frutiger Aero</button>
                 </li>
@@ -31,9 +32,9 @@
     <main>
         <section id="hero">
             <div class="hero-content">
-                <h1>🎄 Приветствуем! Мы - МАХ⚙️ВИК & GAME MEF 🎄</h1>
+                <h1>🎄 С Новым Годом! Мы - МАХ⚙️ВИК & GAME MEF 🎄</h1>
                 <p>Мы создаём игры. Почти все наши игры будут бесплатными.</p>
-                <div class="counter-display">📥 Скачиваний: <span id="count-number">12405</span></div>
+                <div class="counter-box">📥 Скачиваний: <span id="count-number">12405</span></div>
                 <a href="#games" class="cta-button">играть!</a>
             </div>
         </section>
@@ -43,10 +44,10 @@
                 <h2>О нас</h2>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>МАХ⚙️ВИК & GAME MEF — это команда энтузиастов, увлеченных созданием игр. Мы верим, что качественные игры должны быть доступны каждому. Наша цель — приносить радость и новые эмоции игрокам по всему миру.</p>
+                        <p>МАХ⚙️ВИК & GAME MEF — это команда энтузиастов, увлеченных созданием игр. Мы верим, что качественные игры должны быть доступны каждому.</p>
                     </div>
                     <div class="about-logo">
-                        <img src="МАХ⚙️ВИКANDGAMEMEF.png" alt="МАХ⚙️ВИК и GAME MEF жмут руки">
+                        <img src="МАХ⚙️ВИКANDGAMEMEF.png" alt="МАХ⚙️ВИК и GAME MEF">
                     </div>
                 </div>
             </div>
@@ -57,13 +58,12 @@
                 <h2>Наши игры</h2>
                 <div class="game-showcase">
                     <div class="game-card">
-                        <img src="Game.jpg" alt="Изображение игры 5 ночей в шараге">
+                        <img src="Game.jpg" alt="5 ночей в шараге">
                         <h3>5 ночей в шараге</h3>
-                        <p>Это ваша первая рофл-игра, где вам предстоит выживать в школе, полной опасностей. Главное — не относиться к происходящему серьёзно! Удачи!</p>
-                        <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view?usp=drive_link" class="dl-btn" onclick="addDl()">Скачать игру на пк</a>
-                        <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view?usp=drive_link" class="dl-btn" onclick="addDl()">Скачать игру на андроид</a>
+                        <p>Выживайте в школе! Главное — не относиться к происходящему серьёзно!</p>
+                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" onclick="addDl()">Скачать на ПК</a>
+                        <br><br>
+                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" onclick="addDl()">Скачать на Android</a>
                     </div>
                 </div>
             </div>
@@ -72,22 +72,19 @@
         <section id="community" class="section">
             <div class="container">
                 <h2>Сообщество ❄️</h2>
-                <div class="comm-box">
-                    <input type="email" id="c-email" placeholder="Твоя почта (для удаления)">
-                    <input type="text" id="c-name" placeholder="Твое имя">
-                    <textarea id="c-text" placeholder="Комментарий или ссылка на YouTube..."></textarea>
-                    <button id="send-btn" class="cta-button">Опубликовать</button>
+                <div class="post-form">
+                    <input type="email" id="user-email" placeholder="Твоя почта (чтобы удалять свои посты)">
+                    <input type="text" id="user-name" placeholder="Твое имя">
+                    <textarea id="post-text" placeholder="Напиши что-нибудь или вставь ссылку на YouTube видео..."></textarea>
+                    <button id="submit-post" class="cta-button">Опубликовать</button>
                 </div>
-                <div id="posts-list">
-                    <p>Загрузка сообщений...</p>
-                </div>
+                <div id="posts-container">Загрузка стены...</div>
             </div>
         </section>
 
         <section id="contact" class="section">
             <div class="container">
                 <h2>Контакты</h2>
-                <p>Подписывайтесь на нас, чтобы не пропустить свежие рофлы и новости!</p>
                 <ul>
                     <li>TikTok: <a href="https://www.tiktok.com/@Makhovick_group">@Makhovick_group</a></li>
                     <li>Telegram: <a href="https://t.me/+isSzWjrIVfsxNGMy">Telegram</a></li>
@@ -97,84 +94,91 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. Все права защищены. 🎅</p>
+        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. Праздничное обновление 🎅</p>
     </footer>
 
     <script>
-        // --- КОНФИГУРАЦИЯ FIREBASE (Вставь сюда свои данные) ---
+        // ТВОИ КЛЮЧИ FIREBASE
         const firebaseConfig = {
-            apiKey: "ВСТАВЬ_API_KEY",
-            authDomain: "ПРОЕКТ.firebaseapp.com",
-            databaseURL: "https://ПРОЕКТ-default-rtdb.firebaseio.com",
-            projectId: "ПРОЕКТ",
-            storageBucket: "ПРОЕКТ.appspot.com",
-            messagingSenderId: "ID",
-            appId: "ID"
+            apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
+            authDomain: "makhovicksite.firebaseapp.com",
+            projectId: "makhovicksite",
+            storageBucket: "makhovicksite.firebasestorage.app",
+            messagingSenderId: "245142284614",
+            appId: "1:245142284614:web:fd01f94ef372ebc0ad1d47",
+            databaseURL: "https://makhovicksite-default-rtdb.firebaseio.com" // Проверь этот URL в консоли
         };
-        // -------------------------------------------------------
 
+        // Инициализация
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const admin = "sashaonicum@gmail.com";
+        const adminEmail = "sashaonicum@gmail.com";
 
-        // Посты
-        document.getElementById('send-btn').onclick = () => {
-            const email = document.getElementById('c-email').value;
-            const name = document.getElementById('c-name').value;
-            const text = document.getElementById('c-text').value;
+        // ЛОГИКА СООБЩЕСТВА
+        document.getElementById('submit-post').onclick = () => {
+            const email = document.getElementById('user-email').value;
+            const name = document.getElementById('user-name').value;
+            const text = document.getElementById('post-text').value;
+
             if(email && name && text) {
-                db.ref('posts').push({ email, name, text, time: new Date().toLocaleString() });
-                document.getElementById('c-text').value = '';
-            }
+                db.ref('posts').push({ email, name, text, date: new Date().toLocaleString() });
+                document.getElementById('post-text').value = '';
+            } else { alert("Заполни все поля!"); }
         };
 
-        db.ref('posts').on('value', snap => {
-            const list = document.getElementById('posts-list');
-            list.innerHTML = '';
+        db.ref('posts').on('value', (snap) => {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
             const data = snap.val();
             for(let id in data) {
                 const p = data[id];
-                const item = document.createElement('div');
-                item.className = 'post-item';
-                let vid = '';
-                if(p.text.includes('youtube.com/watch?v=')) {
-                    const idV = p.text.split('v=')[1].split('&')[0];
-                    vid = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${idV}" frameborder="0" allowfullscreen></iframe>`;
+                const div = document.createElement('div');
+                div.className = 'post-card';
+                
+                // Проверка на YouTube
+                let video = '';
+                if(p.text.includes('v=')) {
+                    const vId = p.text.split('v=')[1].split('&')[0];
+                    video = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${vId}" frameborder="0" allowfullscreen></iframe>`;
                 }
-                item.innerHTML = `<div><strong>${p.name}</strong> <span onclick="delPost('${id}','${p.email}')" style="cursor:pointer;color:red">❌</span></div>
-                                 <p>${p.text}</p>${vid}<small>${p.time}</small>`;
-                list.prepend(item);
+
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong>${p.name}</strong>
+                        <span onclick="delPost('${id}','${p.email}')" style="cursor:pointer; color:red;">❌</span>
+                    </div>
+                    <p>${p.text}</p>${video}
+                    <small>${p.date}</small>
+                `;
+                container.prepend(div);
             }
         });
 
-        window.delPost = (id, mail) => {
-            const cur = document.getElementById('c-email').value;
-            if(cur === admin || cur === mail) {
-                if(confirm('Удалить?')) db.ref('posts/'+id).remove();
-            } else { alert('Нет прав!'); }
+        window.delPost = (id, owner) => {
+            const cur = document.getElementById('user-email').value;
+            if(cur === adminEmail || cur === owner) {
+                if(confirm('Удалить пост?')) db.ref('posts/' + id).remove();
+            } else { alert('Нет прав для удаления!'); }
         };
 
-        // Тема (твой оригинальный скрипт)
-        document.getElementById('theme-switch').addEventListener('click', () => {
-            const body = document.body;
-            body.classList.toggle('theme-default');
-            body.classList.toggle('theme-frutiger');
-            document.getElementById('theme-switch').textContent = body.classList.contains('theme-frutiger') ? 'Базовая тема' : 'Frutiger Aero';
-        });
+        // Смена темы
+        document.getElementById('theme-switch').onclick = () => {
+            document.body.classList.toggle('theme-default');
+            document.body.classList.toggle('theme-frutiger');
+        };
 
         // Счетчик
         function addDl() {
-            let n = parseInt(localStorage.getItem('dls') || 12405) + 1;
-            localStorage.setItem('dls', n);
-            document.getElementById('count-number').innerText = n;
+            let c = parseInt(localStorage.getItem('dl_cnt') || 12405) + 1;
+            localStorage.setItem('dl_cnt', c);
+            document.getElementById('count-number').innerText = c.toLocaleString();
         }
-        document.getElementById('count-number').innerText = localStorage.getItem('dls') || 12405;
+        document.getElementById('count-number').innerText = (parseInt(localStorage.getItem('dl_cnt') || 12405)).toLocaleString();
 
         // Снег
         setInterval(() => {
             const s = document.createElement('div');
-            s.className = 'snowflake';
-            s.innerHTML = '❄';
+            s.className = 'snow'; s.innerHTML = '❄';
             s.style.left = Math.random() * 100 + 'vw';
             s.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.getElementById('snow-container').appendChild(s);

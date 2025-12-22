@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>МАХ⚙️ВИК & GAME MEF</title>
+    <title>НОВОГОДНИЙ МАХ⚙️ВИК & GAME MEF</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="theme-default">
+    <ul class="lightrope">
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
     <header>
         <nav>
             <div class="logo">
@@ -15,7 +20,8 @@
             </div>
             <ul>
                 <li><a href="#about">О нас</a></li>
-                <li><a href="#games">Наши игры</a></li>
+                <li><a href="#games">Игры</a></li>
+                <li><a href="#community">Сообщество</a></li>
                 <li><a href="#contact">Контакты</a></li>
                 <li class="theme-switch-container">
                     <button id="theme-switch" class="theme-switch-button">Frutiger Aero</button>
@@ -27,23 +33,12 @@
     <main>
         <section id="hero">
             <div class="hero-content">
-                <h1>Приветствуем! Мы - МАХ⚙️ВИК & GAME MEF</h1>
-                <p>Мы создаём игры,Почти все наши игры будут бесплатными.</p>
-                <a href="#games" class="cta-button">играть!</a>
-            </div>
-        </section>
-
-        <section id="about" class="section">
-            <div class="container">
-                <h2>О нас</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>МАХ⚙️ВИК & GAME MEF — это команда энтузиастов, увлеченных созданием игр. Мы верим, что качественные игры должны быть доступны каждому. Наша цель — приносить радость и новые эмоции игрокам по всему миру.</p>
-                    </div>
-                    <div class="about-logo">
-                        <img src="МАХ⚙️ВИКANDGAMEMEF.png" alt="МАХ⚙️ВИК и GAME MEF жмут руки">
-                    </div>
+                <h1 class="ny-title">🎄 С Новым Годом! 🎄</h1>
+                <p>Мы создаём игры. Почти все наши игры будут бесплатными.</p>
+                <div class="download-counter">
+                    📥 Скачиваний: <span id="count-number">12,405</span>
                 </div>
+                <a href="#games" class="cta-button">ИГРАТЬ!</a>
             </div>
         </section>
 
@@ -52,13 +47,34 @@
                 <h2>Наши игры</h2>
                 <div class="game-showcase">
                     <div class="game-card">
-                        <img src="Game.jpg" alt="Изображение игры 5 ночей в шараге">
+                        <img src="Game.jpg" alt="5 ночей в шараге">
                         <h3>5 ночей в шараге</h3>
-                        <p>Это ваша первая рофл-игра, где вам предстоит выживать в школе, полной опасностей. Главное — не относиться к происходящему серьёзно! Удачи!</p>
-                        <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view?usp=drive_link">Скачать игру на пк</a>
-                        <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view?usp=drive_link">Скачать игру на андроид</a>
+                        <p>Рофл-выживание в школе. Не будьте серьезными!</p>
+                        <div class="download-links">
+                            <a href="#" class="dl-btn" onclick="updateCounter()">💻 Для ПК</a>
+                            <a href="#" class="dl-btn" onclick="updateCounter()">📱 Для Android</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" class="section">
+            <div class="container">
+                <h2>Сообщество ❄️</h2>
+                <p>Делитесь своими эдитами, видео и комментариями!</p>
+                
+                <div class="post-form">
+                    <input type="text" id="user-name" placeholder="Твое имя">
+                    <textarea id="post-text" placeholder="Напиши что-нибудь или вставь ссылку на видео..."></textarea>
+                    <button id="submit-post" class="cta-button">Опубликовать</button>
+                </div>
+
+                <div id="posts-container">
+                    <div class="post">
+                        <strong>Админ:</strong>
+                        <p>Ребята, выкладывайте сюда свои прохождения "5 ночей в шараге"!</p>
+                        <span class="post-date">22.12.2025</span>
                     </div>
                 </div>
             </div>
@@ -67,7 +83,6 @@
         <section id="contact" class="section">
             <div class="container">
                 <h2>Контакты</h2>
-                <p>Подписывайтесь на нас, чтобы не пропустить свежие рофлы и новости!</p>
                 <ul>
                     <li>TikTok: <a href="https://www.tiktok.com/@Makhovick_group">@Makhovick_group</a></li>
                     <li>Telegram: <a href="https://t.me/+isSzWjrIVfsxNGMy">Telegram</a></li>
@@ -77,36 +92,63 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. Все права защищены.</p>
+        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. Праздничное обновление 🎅</p>
     </footer>
 
-    <script src="script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeSwitch = document.getElementById('theme-switch');
+        // Смена темы
+        document.getElementById('theme-switch').addEventListener('click', () => {
             const body = document.body;
-
-            themeSwitch.addEventListener('click', () => {
-                if (body.classList.contains('theme-default')) {
-                    body.classList.remove('theme-default');
-                    body.classList.add('theme-frutiger');
-                    themeSwitch.textContent = 'Базовая тема';
-                } else {
-                    body.classList.remove('theme-frutiger');
-                    body.classList.add('theme-default');
-                    themeSwitch.textContent = 'Frutiger Aero';
-                }
-            });
+            if (body.classList.contains('theme-default')) {
+                body.classList.replace('theme-default', 'theme-frutiger');
+                document.getElementById('theme-switch').textContent = 'Базовая тема';
+            } else {
+                body.classList.replace('theme-frutiger', 'theme-default');
+                document.getElementById('theme-switch').textContent = 'Frutiger Aero';
+            }
         });
+
+        // Счетчик скачиваний (имитация)
+        function updateCounter() {
+            let count = parseInt(localStorage.getItem('downloads') || 12405);
+            count++;
+            localStorage.setItem('downloads', count);
+            document.getElementById('count-number').textContent = count.toLocaleString();
+            alert('Спасибо за скачивание! Счастливого Нового года!');
+        }
+        document.getElementById('count-number').textContent = parseInt(localStorage.getItem('downloads') || 12405).toLocaleString();
+
+        // Сообщество (простая логика добавления)
+        document.getElementById('submit-post').addEventListener('click', () => {
+            const name = document.getElementById('user-name').value;
+            const text = document.getElementById('post-text').value;
+            
+            if(name && text) {
+                const container = document.getElementById('posts-container');
+                const post = document.createElement('div');
+                post.className = 'post';
+                post.innerHTML = `<strong>${name}:</strong><p>${text}</p><span class="post-date">${new Date().toLocaleDateString()}</span>`;
+                container.prepend(post);
+                
+                document.getElementById('user-name').value = '';
+                document.getElementById('post-text').value = '';
+            } else {
+                alert('Заполни все поля!');
+            }
+        });
+
+        // Создание снежинок
+        function createSnow() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.opacity = Math.random();
+            document.body.appendChild(snowflake);
+            setTimeout(() => snowflake.remove(), 5000);
+        }
+        setInterval(createSnow, 200);
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

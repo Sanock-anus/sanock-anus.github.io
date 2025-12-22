@@ -103,68 +103,83 @@
     </footer>
 
     <script>
-        // ТВОИ КЛЮЧИ FIREBASE
-        const firebaseConfig = {
-            apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
-            authDomain: "makhovicksite.firebaseapp.com",
-            projectId: "makhovicksite",
-            storageBucket: "makhovicksite.firebasestorage.app",
-            messagingSenderId: "245142284614",
-            appId: "1:245142284614:web:fd01f94ef372ebc0ad1d47",
-            databaseURL: "https://makhovicksite-default-rtdb.firebaseio.com"
-        };
+    // ТВОИ КЛЮЧИ FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
+        authDomain: "makhovicksite.firebaseapp.com",
+        projectId: "makhovicksite",
+        storageBucket: "makhovicksite.firebasestorage.app",
+        messagingSenderId: "245142284614",
+        appId: "1:245142284614:web:fd01f94ef372ebc0ad1d47",
+        databaseURL: "https://makhovicksite-default-rtdb.firebaseio.com"
+    };
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        // Посты
-        document.getElementById('send-msg').onclick = () => {
-            const m = document.getElementById('c-mail').value;
-            const n = document.getElementById('c-name').value;
-            const t = document.getElementById('c-msg').value;
-            if(m && n && t) {
-                db.ref('posts').push({ m, n, t, time: new Date().toLocaleString() });
-                document.getElementById('c-msg').value = '';
-            } else { alert("Заполни все поля!"); }
-        };
+    // === ЛОГИКА СЧЕТЧИКА ===
+    const countRef = db.ref('downloads/total');
 
-        db.ref('posts').on('value', snap => {
-            const wall = document.getElementById('posts-wall');
-            wall.innerHTML = '';
-            const data = snap.val();
-            for(let id in data) {
-                const p = data[id];
-                const div = document.createElement('div');
-                div.className = 'wall-post';
-                div.innerHTML = `<strong>${p.n}:</strong><p>${p.t}</p><small>${p.time}</small>`;
-                wall.prepend(div);
-            }
-        });
-
-        // Переключатель темы (твой старый код)
-        document.getElementById('theme-switch').onclick = () => {
-            document.body.classList.toggle('theme-default');
-            document.body.classList.toggle('theme-frutiger');
-        };
-
-        // Счетчик
-        function countDl() {
-            let c = parseInt(localStorage.getItem('dl_v') || 12405) + 1;
-            localStorage.setItem('dl_v', c);
-            document.getElementById('count-number').innerText = c.toLocaleString();
+    // Чтение значения из базы в реальном времени
+    countRef.on('value', (snapshot) => {
+        let val = snapshot.val();
+        if (val === null) {
+            // Если в базе еще нет числа, ставим твое начальное значение
+            countRef.set(12405);
+            val = 12405;
         }
-        document.getElementById('count-number').innerText = (parseInt(localStorage.getItem('dl_v') || 12405)).toLocaleString();
+        document.getElementById('count-number').innerText = val.toLocaleString();
+    });
 
-        // Снег
-        setInterval(() => {
-            const s = document.createElement('div');
-            s.className = 'snowflake'; s.innerHTML = '❄';
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(s);
-            setTimeout(() => s.remove(), 5000);
-        }, 200);
+    // Функция нажатия на ссылку
+    function countDl() {
+        // Увеличиваем число в базе на +1
+        countRef.transaction((currentValue) => {
+            return (currentValue || 12405) + 1;
+        });
+    }
+
+    // === ЛОГИКА СООБЩЕСТВА ===
+    document.getElementById('send-msg').onclick = () => {
+        const m = document.getElementById('c-mail').value;
+        const n = document.getElementById('c-name').value;
+        const t = document.getElementById('c-msg').value;
+        if(m && n && t) {
+            db.ref('posts').push({ m, n, t, time: new Date().toLocaleString() });
+            document.getElementById('c-msg').value = '';
+        } else { alert("Заполни все поля!"); }
+    };
+
+    db.ref('posts').on('value', snap => {
+        const wall = document.getElementById('posts-wall');
+        wall.innerHTML = '';
+        const data = snap.val();
+        for(let id in data) {
+            const p = data[id];
+            const div = document.createElement('div');
+            div.className = 'wall-post';
+            div.innerHTML = `<strong>${p.n}:</strong><p>${p.t}</p><small>${p.time}</small>`;
+            wall.prepend(div);
+        }
+    });
+
+    // Темы
+    document.getElementById('theme-switch').onclick = () => {
+        document.body.classList.toggle('theme-default');
+        document.body.classList.toggle('theme-frutiger');
+    };
+
+    // Снег
+    setInterval(() => {
+        const s = document.createElement('div');
+        s.className = 'snowflake'; s.innerHTML = '❄';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.animationDuration = Math.random() * 3 + 2 + 's';
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 5000);
+    }, 200);
     </script>
 </body>
 </html>
+
 

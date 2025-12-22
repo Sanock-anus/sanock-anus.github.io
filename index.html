@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>НОВОГОДНИЙ МАХ⚙️ВИК & GAME MEF</title>
+    <title>МАХ⚙️ВИК & GAME MEF — Новогодний</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
-    
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body class="theme-default">
     <ul class="lightrope">
-        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
     </ul>
 
     <header>
@@ -23,7 +21,7 @@
             </div>
             <ul>
                 <li><a href="#about">О нас</a></li>
-                <li><a href="#games">Игры</a></li>
+                <li><a href="#games">Наши игры</a></li>
                 <li><a href="#community">Сообщество</a></li>
                 <li><a href="#contact">Контакты</a></li>
                 <li class="theme-switch-container">
@@ -36,12 +34,26 @@
     <main>
         <section id="hero">
             <div class="hero-content">
-                <h1 class="ny-title">🎄 С Новым Годом! 🎄</h1>
+                <h1 style="color: #e67e22;">🎄 МАХ⚙️ВИК & GAME MEF 🎄</h1>
                 <p>Мы создаём игры. Почти все наши игры будут бесплатными.</p>
-                <div class="download-counter">
+                <div class="download-counter" style="margin-bottom: 15px; font-weight: bold; color: #e67e22;">
                     📥 Скачиваний: <span id="count-number">12,405</span>
                 </div>
-                <a href="#games" class="cta-button">ИГРАТЬ!</a>
+                <a href="#games" class="cta-button">играть!</a>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <h2>О нас</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>МАХ⚙️ВИК & GAME MEF — это команда энтузиастов, увлеченных созданием игр. Мы верим, что качественные игры должны быть доступны каждому.</p>
+                    </div>
+                    <div class="about-logo">
+                        <img src="МАХ⚙️ВИКANDGAMEMEF.png" alt="Логотип" class="about-img-fix">
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -52,10 +64,10 @@
                     <div class="game-card">
                         <img src="Game.jpg" alt="5 ночей в шараге">
                         <h3>5 ночей в шараге</h3>
-                        <p>Рофл-выживание в школе. Не будьте серьезными!</p>
-                        <div class="download-links">
-                            <a href="#" class="dl-btn" onclick="updateCounter()">💻 Для ПК</a>
-                            <a href="#" class="dl-btn" onclick="updateCounter()">📱 Для Android</a>
+                        <p>Это ваша первая рофл-игра. Удачи!</p>
+                        <div class="download-box">
+                           <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="dl-link" onclick="updateCounter()">ПК Версия</a>
+                           <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="dl-link" onclick="updateCounter()">Android Версия</a>
                         </div>
                     </div>
                 </div>
@@ -65,17 +77,14 @@
         <section id="community" class="section">
             <div class="container">
                 <h2>Сообщество ❄️</h2>
-                <p>Делитесь видео, эдитами и комментариями. Удалять может только автор (по почте) или Админ.</p>
-                
                 <div class="post-form">
-                    <input type="email" id="user-email" placeholder="Твоя почта (для контроля поста)">
+                    <input type="email" id="user-email" placeholder="Твоя почта (для удаления своих постов)">
                     <input type="text" id="user-name" placeholder="Твое имя">
-                    <textarea id="post-text" placeholder="Напиши что-нибудь или вставь ссылку на видео..."></textarea>
-                    <button id="submit-post" class="cta-button">Опубликовать</button>
+                    <textarea id="post-text" placeholder="Напиши комментарий или ссылку на видео..."></textarea>
+                    <button id="submit-post" class="cta-button">Отправить</button>
                 </div>
-
                 <div id="posts-container">
-                    <p style="text-align:center;">Загрузка стены сообщества...</p>
+                    <p style="color: #888;">Здесь появятся сообщения (нужно настроить Firebase)...</p>
                 </div>
             </div>
         </section>
@@ -92,126 +101,84 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. Праздничное обновление 🎅</p>
+        <p>&copy; 2025 МАХ⚙️ВИК & GAME MEF. С Новым Годом! 🎅</p>
     </footer>
 
     <script>
-        // --- 1. НАСТРОЙКА FIREBASE ---
-        // Замени эти данные на свои из консоли Firebase (Project Settings -> Config)
+        // ДАННЫЕ FIREBASE (НУЖНО ЗАПОЛНИТЬ СВОИМИ ИЗ КОНСОЛИ FIREBASE)
         const firebaseConfig = {
-            apiKey: "ВАШ_API_KEY",
-            authDomain: "vash-proekt.firebaseapp.com",
-            databaseURL: "https://vash-proekt-default-rtdb.firebaseio.com",
-            projectId: "vash-proekt",
-            storageBucket: "vash-proekt.appspot.com",
-            messagingSenderId: "12345",
-            appId: "1:12345:web:12345"
+            apiKey: "ВСТАВЬ_СВОЙ_API_KEY_ЗДЕСЬ",
+            authDomain: "твой-проект.firebaseapp.com",
+            databaseURL: "https://твой-проект.firebaseio.com",
+            projectId: "твой-проект",
+            storageBucket: "твой-проект.appspot.com",
+            messagingSenderId: "00000000",
+            appId: "1:000000:web:000000"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const adminEmail = "sashaonicum@gmail.com";
+        // Инициализация (только если ключи вставлены)
+        if (firebaseConfig.apiKey !== "ВСТАВЬ_СВОЙ_API_KEY_ЗДЕСЬ") {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+            const adminEmail = "sashaonicum@gmail.com";
 
-        // --- 2. ЛОГИКА СООБЩЕСТВА ---
+            // Отправка поста
+            document.getElementById('submit-post').addEventListener('click', () => {
+                const email = document.getElementById('user-email').value;
+                const name = document.getElementById('user-name').value;
+                const text = document.getElementById('post-text').value;
+                if(email && name && text) {
+                    db.ref('posts').push({ email, name, text, date: new Date().toLocaleString() });
+                    document.getElementById('post-text').value = '';
+                } else { alert('Заполни все поля!'); }
+            });
 
-        // Публикация
-        document.getElementById('submit-post').addEventListener('click', () => {
-            const email = document.getElementById('user-email').value;
-            const name = document.getElementById('user-name').value;
-            const text = document.getElementById('post-text').value;
-            
-            if(email && name && text) {
-                db.ref('posts').push({
-                    email: email,
-                    name: name,
-                    text: text,
-                    date: new Date().toLocaleString()
-                });
-                document.getElementById('post-text').value = '';
-            } else {
-                alert('Заполни все поля (Почта, Имя и Текст)!');
-            }
-        });
-
-        // Отображение постов в реальном времени
-        db.ref('posts').on('value', (snapshot) => {
-            const container = document.getElementById('posts-container');
-            container.innerHTML = '';
-            const data = snapshot.val();
-            
-            for(let id in data) {
-                const post = data[id];
-                const div = document.createElement('div');
-                div.className = 'post';
-                
-                // Проверка на видео (YouTube)
-                let videoHtml = '';
-                if(post.text.includes('youtube.com/watch?v=')) {
-                    const vidId = post.text.split('v=')[1].split('&')[0];
-                    videoHtml = `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${vidId}" frameborder="0" allowfullscreen></iframe>`;
+            // Загрузка постов
+            db.ref('posts').on('value', (snap) => {
+                const container = document.getElementById('posts-container');
+                container.innerHTML = '';
+                const data = snap.val();
+                for(let id in data) {
+                    const p = data[id];
+                    const div = document.createElement('div');
+                    div.className = 'post-item';
+                    div.innerHTML = `<div><strong>${p.name}:</strong> <span style="color:red; cursor:pointer;" onclick="delPost('${id}','${p.email}')">❌</span></div>
+                                     <p>${p.text}</p><small>${p.date}</small>`;
+                    container.prepend(div);
                 }
+            });
 
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                        <strong>${post.name}:</strong>
-                        <button onclick="deletePost('${id}', '${post.email}')" style="background:none; border:none; cursor:pointer; color:red;">❌</button>
-                    </div>
-                    <p>${post.text}</p>
-                    ${videoHtml}
-                    <span class="post-date">${post.date}</span>
-                `;
-                container.prepend(div);
-            }
-        });
-
-        // Удаление (только админ или автор)
-        window.deletePost = function(postId, postOwnerEmail) {
-            const currentEmail = document.getElementById('user-email').value;
-            if(currentEmail === adminEmail || currentEmail === postOwnerEmail) {
-                if(confirm('Удалить этот пост?')) {
-                    db.ref('posts/' + postId).remove();
-                }
-            } else {
-                alert('Ошибка доступа! Введите свою почту в поле выше. Удалять может только автор или sashaonicum@gmail.com');
-            }
+            window.delPost = (id, owner) => {
+                const cur = document.getElementById('user-email').value;
+                if(cur === adminEmail || cur === owner) {
+                    if(confirm('Удалить?')) db.ref('posts/'+id).remove();
+                } else { alert('Нет прав!'); }
+            };
         }
 
-        // --- 3. ОСТАЛЬНЫЕ ФУНКЦИИ ---
-
-        // Смена темы
-        document.getElementById('theme-switch').addEventListener('click', () => {
-            const body = document.body;
-            if (body.classList.contains('theme-default')) {
-                body.classList.replace('theme-default', 'theme-frutiger');
-                document.getElementById('theme-switch').textContent = 'Базовая тема';
-            } else {
-                body.classList.replace('theme-frutiger', 'theme-default');
-                document.getElementById('theme-switch').textContent = 'Frutiger Aero';
-            }
+        // Тема, Снег и Счетчик
+        const themeBtn = document.getElementById('theme-switch');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('theme-frutiger');
+            document.body.classList.toggle('theme-default');
+            themeBtn.textContent = document.body.classList.contains('theme-frutiger') ? 'Базовая тема' : 'Frutiger Aero';
         });
 
-        // Счетчик скачиваний
         function updateCounter() {
-            let count = parseInt(localStorage.getItem('downloads') || 12405);
-            count++;
-            localStorage.setItem('downloads', count);
-            document.getElementById('count-number').textContent = count.toLocaleString();
-            alert('Спасибо за скачивание! С Новым годом!');
+            let c = parseInt(localStorage.getItem('dl') || 12405) + 1;
+            localStorage.setItem('dl', c);
+            document.getElementById('count-number').textContent = c.toLocaleString();
         }
-        document.getElementById('count-number').textContent = parseInt(localStorage.getItem('downloads') || 12405).toLocaleString();
+        document.getElementById('count-number').textContent = parseInt(localStorage.getItem('dl') || 12405).toLocaleString();
 
-        // Снег
-        function createSnow() {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.innerHTML = '❄';
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            snowflake.style.opacity = Math.random();
-            document.body.appendChild(snowflake);
-            setTimeout(() => snowflake.remove(), 5000);
-        }
-        setInterval(createSnow, 200);
+        setInterval(() => {
+            const s = document.createElement('div');
+            s.className = 'snow'; s.innerHTML = '❄';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 5000);
+        }, 300);
     </script>
 </body>
 </html>

@@ -1,69 +1,63 @@
-/* Фикс иконок и темной темы */
-.logo-img {
-    height: 45px !important; /* Фиксированный размер */
-    width: auto;
+/* Новогодние правки и сообщество */
+#snow-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
 }
 
-.about-img-fix {
-    max-width: 250px !important;
-    border-radius: 10px;
+.snowflake {
+    position: absolute;
+    top: -20px;
+    color: white;
+    font-size: 1.2rem;
+    animation: fall linear forwards;
 }
 
-/* Стили сообщества в темной теме */
-.post-form {
-    background: #1a1a1a;
-    padding: 20px;
+@keyframes fall {
+    to { transform: translateY(105vh) rotate(360deg); }
+}
+
+.counter-display {
+    background: rgba(230, 126, 34, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin: 10px 0;
+    display: inline-block;
     border: 1px solid #e67e22;
+}
+
+.comm-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
     border-radius: 10px;
+    border: 1px solid #e67e22;
     margin-bottom: 20px;
 }
 
-.post-form input, .post-form textarea {
+.comm-box input, .comm-box textarea {
     width: 100%;
     background: #333;
-    color: white;
     border: 1px solid #444;
+    color: white;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .post-item {
     background: #2c3e50;
     padding: 15px;
-    border-radius: 8px;
     margin-bottom: 10px;
+    border-radius: 8px;
+    text-align: left;
     border-left: 4px solid #e67e22;
 }
 
-/* Снег */
-.snow {
-    position: fixed;
-    top: -10px;
-    color: white;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fall linear forwards;
+.dl-btn {
+    color: #e67e22;
+    text-decoration: underline;
+    font-weight: bold;
 }
-@keyframes fall { to { transform: translateY(105vh); } }
-
-/* Гирлянда */
-.lightrope {
-    width: 100%;
-    white-space: nowrap;
-    position: absolute;
-    top: 0;
-    pointer-events: none;
-    z-index: 10000;
-}
-.lightrope li {
-    display: inline-block;
-    width: 10px;
-    height: 20px;
-    border-radius: 50%;
-    margin: 15px;
-    animation: flash 1.5s infinite;
-}
-.lightrope li:nth-child(odd) { background: #ff0000; }
-.lightrope li:nth-child(even) { background: #00ff00; }
-@keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }

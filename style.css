@@ -1,120 +1,69 @@
-/* НОВОГОДНИЕ ДОПОЛНЕНИЯ */
-
-/* Снежинки */
-.snowflake {
-    position: fixed;
-    top: -10px;
-    color: white;
-    user-select: none;
-    z-index: 9999;
-    pointer-events: none;
-    animation: fall linear forwards;
+/* Фикс иконок и темной темы */
+.logo-img {
+    height: 45px !important; /* Фиксированный размер */
+    width: auto;
 }
 
-@keyframes fall {
-    to { transform: translateY(105vh) rotate(360deg); }
+.about-img-fix {
+    max-width: 250px !important;
+    border-radius: 10px;
 }
 
-/* Заголовок */
-.ny-title {
-    font-family: 'Mountains of Christmas', cursive;
-    font-size: 3.5rem;
-    color: #ff4757 !important;
-    text-shadow: 0 0 10px #fff;
-}
-
-/* Счетчик */
-.download-counter {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 20px;
-    display: inline-block;
-    margin: 10px 0;
-    border: 1px solid #e67e22;
-}
-
-/* Кнопки скачивания */
-.download-links {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.dl-btn {
-    background: #27ae60;
-    color: white;
-    padding: 8px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: 0.3s;
-}
-
-.dl-btn:hover { background: #2ecc71; }
-
-/* Сообщество */
+/* Стили сообщества в темной теме */
 .post-form {
-    background: rgba(255, 255, 255, 0.1);
+    background: #1a1a1a;
     padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
+    border: 1px solid #e67e22;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .post-form input, .post-form textarea {
     width: 100%;
-    margin-bottom: 10px;
+    background: #333;
+    color: white;
+    border: 1px solid #444;
     padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 
-.post {
-    background: rgba(255, 255, 255, 0.05);
+.post-item {
+    background: #2c3e50;
     padding: 15px;
-    border-left: 5px solid #e67e22;
-    margin-bottom: 15px;
-    text-align: left;
-    border-radius: 0 10px 10px 0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #e67e22;
 }
 
-.post-date {
-    font-size: 0.8rem;
-    color: #bdc3c7;
+/* Снег */
+.snow {
+    position: fixed;
+    top: -10px;
+    color: white;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear forwards;
 }
+@keyframes fall { to { transform: translateY(105vh); } }
 
-/* ГИРЛЯНДА (Краткая версия для красоты) */
+/* Гирлянда */
 .lightrope {
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  position: absolute;
-  z-index: 1001;
-  margin: -15px 0 0 0;
-  padding: 0;
-  pointer-events: none;
-  width: 100%;
+    width: 100%;
+    white-space: nowrap;
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+    z-index: 10000;
 }
 .lightrope li {
-  position: relative;
-  animation-fill-mode: both;
-  animation-iteration-count: infinite;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-  width: 12px;
-  height: 28px;
-  border-radius: 50%;
-  margin: 20px;
-  background: #ff0000;
-  animation-name: lightning;
-  animation-duration: 2s;
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 15px;
+    animation: flash 1.5s infinite;
 }
-.lightrope li:nth-child(2n+1) { background: #00ff00; animation-duration: 1.5s; }
-.lightrope li:nth-child(3n+1) { background: #0000ff; animation-duration: 1.2s; }
-
-@keyframes lightning {
-    0%, 100% { opacity: 1; box-shadow: 0 0 20px #fff; }
-    50% { opacity: 0.4; box-shadow: none; }
-}
+.lightrope li:nth-child(odd) { background: #ff0000; }
+.lightrope li:nth-child(even) { background: #00ff00; }
+@keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }

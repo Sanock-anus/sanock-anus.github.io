@@ -9,14 +9,32 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <style>
+        /* Фикс маленькой карточки */
+        .game-showcase { display: flex; justify-content: center; padding: 20px; }
+        .game-card { 
+            background: #2c3e50; 
+            padding: 25px; 
+            border-radius: 15px; 
+            border: 2px solid #e67e22;
+            max-width: 500px; 
+            width: 100%;
+            text-align: center;
+        }
+        .game-card img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .reply-block { margin-left: 30px; border-left: 2px dashed #e67e22; padding-left: 15px; margin-top: 10px; }
+        .vote-active-up { color: #2ecc71 !important; font-weight: bold; }
+        .vote-active-down { color: #e74c3c !important; font-weight: bold; }
+        @keyframes fall { to { transform: translateY(105vh); } }
+    </style>
 </head>
 <body class="theme-default">
 
     <header>
         <nav>
             <div class="logo">
-                <img src="МАХ⚙️ВИК.png" alt="Логотип МАХ⚙️ВИК" class="logo-img">
-                <img src="Изображение WhatsApp 2025-08-28 в 22.16.06_5d40c46f.jpg" alt="Логотип Game MEF" class="logo-img">
+                <img src="МАХ⚙️ВИК.png" alt="Лого" class="logo-img">
+                <img src="Изображение WhatsApp 2025-08-28 в 22.16.06_5d40c46f.jpg" alt="Logo 2" class="logo-img">
             </div>
             <ul>
                 <li><a href="#about">О нас</a></li>
@@ -37,13 +55,18 @@
         </section>
 
         <section id="games" class="section">
-            <div class="container" style="text-align:center;">
-                <h2>Наши игры</h2>
-                <div class="game-card" style="background:#2c3e50; padding:20px; border-radius:15px; display:inline-block;">
-                    <img src="Game.jpg" alt="5 ночей в шараге" style="max-width: 200px; border-radius: 10px;">
-                    <h3>5 ночей в шараге</h3>
-                    <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="cta-button" onclick="countDl()">ПК</a>
-                    <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="cta-button" onclick="countDl()">Android</a>
+            <div class="container">
+                <h2 style="text-align:center;">Наши игры</h2>
+                <div class="game-showcase">
+                    <div class="game-card">
+                        <img src="Game.jpg" alt="5 ночей в шараге">
+                        <h3>5 ночей в шараге</h3>
+                        <p>Доступно бесплатно на всех платформах!</p>
+                        <div style="display:flex; gap:10px; justify-content:center;">
+                            <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="cta-button" onclick="countDl()">Скачать на ПК</a>
+                            <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="cta-button" onclick="countDl()">Скачать на Android</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -52,23 +75,24 @@
             <div class="container">
                 <h2>Сообщество ❄️</h2>
                 
-                <div id="auth-box" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #3498db; margin-bottom: 20px; text-align: left;">
+                <div id="auth-box" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #3498db; margin-bottom: 20px;">
                     <div id="user-info" style="display:none; margin-bottom:10px;">
                         Вы вошли как: <strong id="current-user-display" style="color:#3498db;"></strong> 
-                        <button onclick="logout()" style="background:#e74c3c; padding:3px 10px; font-size:0.8em;">Выйти</button>
+                        <button onclick="logout()" style="background:#e74c3c; padding:5px 10px; margin-left:10px;">Выйти</button>
                     </div>
                     <div id="auth-forms">
-                        <input type="text" id="c-name" placeholder="Никнейм" style="width:48%; margin-bottom:10px; padding:8px; background:#333; color:#fff; border:1px solid #444;">
-                        <input type="email" id="c-email" placeholder="Почта" style="width:48%; margin-bottom:10px; padding:8px; background:#333; color:#fff; border:1px solid #444;">
-                        <input type="password" id="c-pass" placeholder="Пароль" style="width:100%; margin-bottom:10px; padding:8px; background:#333; color:#fff; border:1px solid #444;">
-                        <button onclick="register()" class="cta-button" style="background:#2ecc71;">Регистрация</button>
-                        <button onclick="login()" class="cta-button" style="background:#3498db;">Войти</button>
+                        <input type="text" id="c-name" placeholder="Никнейм" style="width:30%; margin-bottom:5px;">
+                        <input type="email" id="c-email" placeholder="Почта" style="width:30%; margin-bottom:5px;">
+                        <input type="password" id="c-pass" placeholder="Пароль" style="width:30%; margin-bottom:5px;">
+                        <br>
+                        <button onclick="register()" style="background:#2ecc71;">Регистрация</button>
+                        <button onclick="login()" style="background:#3498db;">Войти</button>
                     </div>
                 </div>
 
-                <div id="msg-input-area" style="display:none; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #e67e22; margin-bottom: 20px;">
-                    <textarea id="c-msg" placeholder="Ваш комментарий..." style="width:100%; height:80px; margin-bottom:10px; padding:8px; border-radius:5px; background:#333; color:#fff; border:1px solid #444;"></textarea>
-                    <button id="send-msg" class="cta-button">Опубликовать</button>
+                <div id="msg-input-area" style="display:none; margin-bottom:20px;">
+                    <textarea id="c-msg" placeholder="Ваш комментарий или ссылка на YouTube..." style="width:100%; height:80px;"></textarea>
+                    <button id="send-msg" class="cta-button" style="width:100%; margin-top:5px;">Опубликовать</button>
                 </div>
                 
                 <div id="posts-wall">Загрузка сообщений...</div>
@@ -77,6 +101,7 @@
     </main>
 
     <script>
+        // Тот же конфиг
         const firebaseConfig = {
             apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
             authDomain: "makhovicksite.firebaseapp.com",
@@ -92,84 +117,69 @@
 
         let currentUser = null;
 
-        // --- ЛОГИКА АККАУНТОВ ---
+        // AUTH
         function register() {
-            const email = document.getElementById('c-email').value;
-            const pass = document.getElementById('c-pass').value;
-            const name = document.getElementById('c-name').value;
-            if(!name) return alert("Введите ник!");
-            
-            auth.createUserWithEmailAndPassword(email, pass)
-                .then((userCredential) => {
-                    userCredential.user.updateProfile({ displayName: name });
-                    alert("Регистрация успешна!");
-                }).catch(err => alert(err.message));
+            const e = document.getElementById('c-email').value;
+            const p = document.getElementById('c-pass').value;
+            const n = document.getElementById('c-name').value;
+            if(!n) return alert("Введите ник!");
+            auth.createUserWithEmailAndPassword(e, p).then(res => res.user.updateProfile({displayName: n})).catch(a => alert(a.message));
         }
-
         function login() {
-            const email = document.getElementById('c-email').value;
-            const pass = document.getElementById('c-pass').value;
-            auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+            auth.signInWithEmailAndPassword(document.getElementById('c-email').value, document.getElementById('c-pass').value).catch(a => alert(a.message));
         }
-
         function logout() { auth.signOut(); }
 
         auth.onAuthStateChanged(user => {
             currentUser = user;
-            const authForms = document.getElementById('auth-forms');
-            const userInfo = document.getElementById('user-info');
-            const msgInput = document.getElementById('msg-input-area');
-            
-            if(user) {
-                authForms.style.display = 'none';
-                userInfo.style.display = 'block';
-                msgInput.style.display = 'block';
-                document.getElementById('current-user-display').innerText = user.displayName || user.email;
-            } else {
-                authForms.style.display = 'block';
-                userInfo.style.display = 'none';
-                msgInput.style.display = 'none';
-            }
+            document.getElementById('auth-forms').style.display = user ? 'none' : 'block';
+            document.getElementById('user-info').style.display = user ? 'block' : 'none';
+            document.getElementById('msg-input-area').style.display = user ? 'block' : 'none';
+            if(user) document.getElementById('current-user-display').innerText = user.displayName;
         });
 
-        // --- ЛАЙКИ И КОММЕНТЫ ---
-        function parseVideo(text) {
-            const ytReg = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-            const match = text.match(ytReg);
-            return match ? `<br><iframe width="100%" height="200" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
+        // Видео
+        function parseVideo(t) {
+            const m = t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            return m ? `<br><iframe width="100%" height="250" src="https://www.youtube.com/embed/${m[1]}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
         }
 
-        window.toggleVote = function(id, type) {
-            if(!currentUser) return alert("Войдите в аккаунт!");
-            const userId = currentUser.uid;
-            const voteRef = db.ref(`posts/${id}/votes/${userId}`);
-            
-            voteRef.once('value', snap => {
-                if(snap.val() === type) {
-                    voteRef.remove(); // Убираем лайк, если нажали второй раз
-                } else {
-                    voteRef.set(type); // Ставим или меняем лайк/дизлайк
-                }
-            });
+        // Лайки с защитой (можно убрать)
+        window.toggleVote = function(path, type) {
+            if(!currentUser) return alert("Войдите!");
+            const ref = db.ref(path + '/votes/' + currentUser.uid);
+            ref.once('value', s => s.val() === type ? ref.remove() : ref.set(type));
         };
 
-        window.deletePost = function(id) {
-            if(confirm("Удалить сообщение?")) db.ref(`posts/${id}`).remove();
+        // Ответы на ответы
+        window.sendReply = function(parentId, targetName) {
+            const t = document.getElementById('r-msg-' + parentId).value;
+            if(t && currentUser) {
+                db.ref(`posts/${parentId}/replies`).push({
+                    uid: currentUser.uid,
+                    n: currentUser.displayName,
+                    t: `@${targetName}, ${t}`,
+                    time: new Date().toLocaleString()
+                });
+                document.getElementById('r-msg-' + parentId).value = '';
+            }
         };
 
+        window.openReply = function(id) {
+            const el = document.getElementById('re-form-' + id);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // Главный пост
         document.getElementById('send-msg').onclick = () => {
             const t = document.getElementById('c-msg').value;
             if(t && currentUser) {
-                db.ref('posts').push({
-                    uid: currentUser.uid,
-                    n: currentUser.displayName || "Аноним",
-                    t, 
-                    time: new Date().toLocaleString()
-                });
+                db.ref('posts').push({ uid: currentUser.uid, n: currentUser.displayName, t, time: new Date().toLocaleString() });
                 document.getElementById('c-msg').value = '';
             }
         };
 
+        // Отрисовка
         db.ref('posts').on('value', snap => {
             const wall = document.getElementById('posts-wall');
             wall.innerHTML = '';
@@ -177,38 +187,56 @@
             for(let id in data) {
                 const p = data[id];
                 const votes = p.votes || {};
-                const likes = Object.values(votes).filter(v => v === 'up').length;
-                const dislikes = Object.values(votes).filter(v => v === 'down').length;
-                const myVote = currentUser ? votes[currentUser.uid] : null;
-                
-                const isOwner = currentUser && (currentUser.uid === p.uid || currentUser.email === 'sanokgameplay@gmail.com');
+                const up = Object.values(votes).filter(v => v === 'up').length;
+                const down = Object.values(votes).filter(v => v === 'down').length;
+                const myV = currentUser ? votes[currentUser.uid] : null;
 
                 let html = `
-                    <div style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #e67e22; color:white;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <strong style="color:#e67e22;">${p.n}</strong>
-                            <div>
-                                ${isOwner ? `<button onclick="deletePost('${id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer; margin-right:10px;">🗑</button>` : ''}
-                                <small style="opacity:0.5;">${p.time}</small>
-                            </div>
-                        </div>
+                    <div class="post" style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #e67e22; color:white;">
+                        <strong>${p.n}</strong> <small style="opacity:0.5;">${p.time}</small>
                         <p>${p.t}${parseVideo(p.t)}</p>
                         <div style="display:flex; gap:10px;">
-                            <button onclick="toggleVote('${id}', 'up')" style="background:none; border:none; color:${myVote==='up'?'#2ecc71':'#888'}; cursor:pointer;">👍 ${likes}</button>
-                            <button onclick="toggleVote('${id}', 'down')" style="background:none; border:none; color:${myVote==='down'?'#e74c3c':'#888'}; cursor:pointer;">👎 ${dislikes}</button>
+                            <button onclick="toggleVote('posts/${id}', 'up')" class="${myV==='up'?'vote-active-up':''}">👍 ${up}</button>
+                            <button onclick="toggleVote('posts/${id}', 'down')" class="${myV==='down'?'vote-active-down':''}">👎 ${down}</button>
+                            <button onclick="openReply('${id}')">Ответить</button>
                         </div>
-                    </div>
+                        <div id="re-form-${id}" style="display:none; margin-top:10px;">
+                            <textarea id="r-msg-${id}" placeholder="Ваш ответ..." style="width:100%; background:#444; color:#fff;"></textarea>
+                            <button onclick="sendReply('${id}', '${p.n}')" style="margin-top:5px; background:#2ecc71;">Отправить ответ</button>
+                        </div>
+                        <div class="reply-block">
                 `;
+
+                if(p.replies) {
+                    for(let rid in p.replies) {
+                        const r = p.replies[rid];
+                        const rVotes = r.votes || {};
+                        const rUp = Object.values(rVotes).filter(v => v === 'up').length;
+                        const rDown = Object.values(rVotes).filter(v => v === 'down').length;
+                        const myRV = currentUser ? rVotes[currentUser.uid] : null;
+
+                        html += `
+                            <div style="margin-bottom:10px; padding:5px; background:rgba(255,255,255,0.03); border-radius:5px;">
+                                <strong>${r.n}</strong>: ${r.t}
+                                <div style="display:flex; gap:10px; margin-top:5px; font-size:0.8em;">
+                                    <button onclick="toggleVote('posts/${id}/replies/${rid}', 'up')" class="${myRV==='up'?'vote-active-up':''}">👍 ${rUp}</button>
+                                    <button onclick="toggleVote('posts/${id}/replies/${rid}', 'down')" class="${myRV==='down'?'vote-active-down':''}">👎 ${rDown}</button>
+                                    <button onclick="openReply('${id}')">Ответить ещё</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                html += `</div></div>`;
                 wall.insertAdjacentHTML('afterbegin', html);
             }
         });
 
-        // Счётчик скачиваний
+        // Счётчик и Снег
         const countRef = db.ref('downloads/total');
-        countRef.on('value', (s) => document.getElementById('count-number').innerText = s.val() || 0);
+        countRef.on('value', s => document.getElementById('count-number').innerText = s.val() || 0);
         function countDl() { countRef.transaction(c => (c || 0) + 1); }
 
-        // Снег
         setInterval(() => {
             const s = document.createElement('div');
             s.innerHTML = '❄';
@@ -217,6 +245,5 @@
             setTimeout(() => s.remove(), 5000);
         }, 300);
     </script>
-    <style> @keyframes fall { to { transform: translateY(105vh); } } </style>
 </body>
 </html>

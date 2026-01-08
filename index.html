@@ -93,58 +93,67 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Проверка ника (админ)
+        // Проверка ника админа
         function checkAdmin(name) {
             if(name === "МАХ⚙️ВИК-админ") {
                 const mail = prompt("Введите почту администратора:");
                 if(mail !== "sanokgameplay@gmail.com") {
                     alert("Доступ запрещен!");
+                    document.getElementById('c-name').value = "";
                     return "Аноним";
                 }
             }
-            return name;
+            return name || "Аноним";
         }
 
-        // Парсер видео
+        // Парсер видео YouTube
         function parseVideo(text) {
             const ytReg = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
             const match = text.match(ytReg);
-            return match ? `<br><iframe width="100%" height="200" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
+            return match ? `<br><iframe width="100%" height="200" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen style="margin-top:10px; border-radius:5px;"></iframe>` : "";
         }
 
-        // Голосование
-        window.vote = function(id, type, isReply = false, parentId = null) {
-            let path = isReply ? `posts/${parentId}/replies/${id}/${type}` : `posts/${id}/${type}`;
+        // Лайки/Дизлайки (универсальный путь)
+        window.vote = function(path) {
             db.ref(path).transaction(c => (c || 0) + 1);
         };
 
-        // Работа с ответами
-        window.openReplyForm = function(id) {
+        // Открытие формы ответа
+        window.openReplyForm = function(id, targetName) {
             const f = document.getElementById('reply-form-' + id);
+            const area = document.getElementById('r-msg-' + id);
             f.style.display = f.style.display === 'none' ? 'block' : 'none';
+            if(targetName) {
+                area.value = `@${targetName}, `;
+                area.focus();
+            }
         };
 
+        // Отправка ответа
         window.sendReply = function(parentId) {
-            let n = document.getElementById('c-name').value || "Аноним";
+            let n = document.getElementById('c-name').value;
+            if(!n) { alert("Сначала введите свой ник в поле имени выше!"); return; }
             n = checkAdmin(n);
+            
             const t = document.getElementById('r-msg-' + parentId).value;
             if(t) {
                 db.ref(`posts/${parentId}/replies`).push({
                     n, t, time: new Date().toLocaleString(), likes: 0, dislikes: 0
                 });
                 document.getElementById('r-msg-' + parentId).value = '';
-                openReplyForm(parentId);
+                document.getElementById('reply-form-' + parentId).style.display = 'none';
             }
         };
 
+        // Скрыть/показать ветку ответов
         window.toggleReplies = function(id) {
             const b = document.getElementById('reply-box-' + id);
             b.style.display = b.style.display === 'none' ? 'block' : 'none';
         };
 
-        // Отправка главного поста
+        // Публикация главного сообщения
         document.getElementById('send-msg').onclick = () => {
-            let n = document.getElementById('c-name').value || "Аноним";
+            let n = document.getElementById('c-name').value;
             n = checkAdmin(n);
             const t = document.getElementById('c-msg').value;
             if(t) {
@@ -153,7 +162,7 @@
             }
         };
 
-        // Отрисовка
+        // Отрисовка сообщений
         db.ref('posts').on('value', snap => {
             const wall = document.getElementById('posts-wall');
             wall.innerHTML = '';
@@ -164,31 +173,41 @@
                 const rCount = p.replies ? Object.keys(p.replies).length : 0;
                 
                 let html = `
-                    <div style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:10px; border-left:4px solid #e67e22; color:white;">
-                        <strong>${p.n}</strong> <small style="opacity:0.5;">${p.time}</small>
+                    <div style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #e67e22; color:white; text-align:left;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong style="color:#e67e22;">${p.n}</strong>
+                            <small style="opacity:0.5;">${p.time}</small>
+                        </div>
                         <p>${p.t}${video}</p>
-                        <div style="display:flex; gap:10px;">
-                            <button onclick="vote('${id}', 'likes')" style="background:none; border:none; color:#2ecc71; cursor:pointer;">👍 ${p.likes || 0}</button>
-                            <button onclick="vote('${id}', 'dislikes')" style="background:none; border:none; color:#e74c3c; cursor:pointer;">👎 ${p.dislikes || 0}</button>
-                            <button onclick="openReplyForm('${id}')" style="background:#e67e22; border:none; color:white; padding:5px 10px; border-radius:5px; cursor:pointer;">Ответить</button>
-                            ${rCount ? `<button onclick="toggleReplies('${id}')" style="background:#f1c40f; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Ответы (${rCount})</button>` : ''}
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button onclick="vote('posts/${id}/likes')" style="background:none; border:none; color:#2ecc71; cursor:pointer;">👍 ${p.likes || 0}</button>
+                            <button onclick="vote('posts/${id}/dislikes')" style="background:none; border:none; color:#e74c3c; cursor:pointer;">👎 ${p.dislikes || 0}</button>
+                            <button onclick="openReplyForm('${id}', '${p.n}')" style="background:#e67e22; border:none; color:white; padding:5px 10px; border-radius:5px; cursor:pointer;">Ответить</button>
+                            ${rCount ? `<button onclick="toggleReplies('${id}')" style="background:#3498db; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; color:white;">Ответы (${rCount})</button>` : ''}
                         </div>
+
                         <div id="reply-form-${id}" style="display:none; margin-top:10px;">
-                            <textarea id="r-msg-${id}" placeholder="Ваш ответ..." style="width:100%; background:#444; color:#fff; padding:5px;"></textarea>
-                            <button onclick="sendReply('${id}')" style="margin-top:5px; background:#e67e22; color:white; border:none; padding:5px 10px; border-radius:5px;">Отправить ответ</button>
+                            <textarea id="r-msg-${id}" style="width:100%; background:#444; color:#fff; border-radius:5px; padding:5px; min-height:50px; border:1px solid #666;"></textarea>
+                            <button onclick="sendReply('${id}')" style="margin-top:5px; background:#2ecc71; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">Отправить</button>
                         </div>
-                        <div id="reply-box-${id}" style="display:none; margin-left:30px; margin-top:10px; border-left:2px solid #555; padding-left:10px;">
+
+                        <div id="reply-box-${id}" style="display:none; margin-left:25px; margin-top:15px; border-left:2px dashed #e67e22; padding-left:15px;">
                 `;
 
                 if(p.replies) {
                     for(let rId in p.replies) {
                         const r = p.replies[rId];
                         html += `
-                            <div style="margin-bottom:10px; background:rgba(255,255,255,0.05); padding:8px; border-radius:5px;">
-                                <strong>${r.n}</strong>: ${r.t}
-                                <div style="margin-top:5px;">
-                                    <button onclick="vote('${rId}', 'likes', true, '${id}')" style="background:none; border:none; color:#2ecc71; cursor:pointer;">👍 ${r.likes || 0}</button>
-                                    <button onclick="vote('${rId}', 'dislikes', true, '${id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer;">👎 ${r.dislikes || 0}</button>
+                            <div style="margin-bottom:12px; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; border-left:2px solid #3498db;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85em;">
+                                    <strong style="color:#3498db;">${r.n}</strong>
+                                    <small style="opacity:0.5;">${r.time}</small>
+                                </div>
+                                <div style="margin:5px 0; word-wrap: break-word;">${r.t}</div>
+                                <div style="display:flex; gap:10px;">
+                                    <button onclick="vote('posts/${id}/replies/${rId}/likes')" style="background:none; border:none; color:#2ecc71; cursor:pointer; font-size:0.9em;">👍 ${r.likes || 0}</button>
+                                    <button onclick="vote('posts/${id}/replies/${rId}/dislikes')" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:0.9em;">👎 ${r.dislikes || 0}</button>
+                                    <button onclick="openReplyForm('${id}', '${r.n}')" style="background:none; border:none; color:#e67e22; cursor:pointer; font-size:0.9em; text-decoration:underline;">Ответить</button>
                                 </div>
                             </div>
                         `;

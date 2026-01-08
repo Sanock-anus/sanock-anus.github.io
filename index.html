@@ -5,30 +5,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МАХ⚙️ВИК & GAME MEF</title>
-    <link rel="stylesheet" href="style.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
     <style>
-        /* Фикс маленькой карточки */
+        /* ОСНОВНОЙ СТИЛЬ */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0; padding: 0;
+            background-color: #1a1a1a;
+            color: #ecf0f1;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #1a1a1a;
+            padding: 1rem 0;
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 2px solid #e67e22;
+        }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+        }
+
+        .logo-img { height: 40px; width: auto; margin-right: 10px; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; }
+        nav a { color: #ecf0f1; text-decoration: none; font-weight: bold; }
+
+        .section { padding: 100px 2rem; max-width: 1200px; margin: 0 auto; }
+        
+        /* КАРТОЧКА ИГРЫ (Исправленная) */
         .game-showcase { display: flex; justify-content: center; padding: 20px; }
         .game-card { 
             background: #2c3e50; 
-            padding: 50px; 
-            border-radius: 15px; 
+            padding: 30px; 
+            border-radius: 20px; 
             border: 2px solid #e67e22;
-            max-width: 100%; 
+            max-width: 800px; 
             width: 100%;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .game-card img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        .reply-block { margin-left: 30px; border-left: 2px dashed #e67e22; padding-left: 15px; margin-top: 10px; }
-        .vote-active-up { color: #2ecc71 !important; font-weight: bold; }
-        .vote-active-down { color: #e74c3c !important; font-weight: bold; }
+        .game-card img { width: 100%; border-radius: 15px; margin-bottom: 20px; }
+
+        /* ИНТЕРФЕЙС БЕЗ WINDOWS 95 (Темный и скругленный) */
+        input, textarea {
+            background: #333 !important;
+            color: #fff !important;
+            border: 1px solid #444 !important;
+            border-radius: 10px !important;
+            padding: 12px !important;
+            outline: none !important;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #e67e22; transform: translateY(-2px); }
+
+        /* СООБЩЕСТВО */
+        #auth-box {
+            background: rgba(44, 62, 80, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #3498db;
+            margin-bottom: 25px;
+        }
+
+        .post {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #e67e22;
+            text-align: left;
+        }
+
+        .reply-block {
+            margin-left: 30px;
+            border-left: 2px dashed #e67e22;
+            padding-left: 15px;
+            margin-top: 15px;
+        }
+
+        /* Лайки (Активные цвета) */
+        .vote-active-up { color: #2ecc71 !important; background: rgba(46, 204, 113, 0.1); }
+        .vote-active-down { color: #e74c3c !important; background: rgba(231, 76, 60, 0.1); }
+
+        .cta-button {
+            display: inline-block; background-color: #e67e22; color: #fff;
+            padding: 1rem 2rem; text-decoration: none; border-radius: 50px;
+            font-weight: bold; margin-top: 1rem;
+        }
+
         @keyframes fall { to { transform: translateY(105vh); } }
     </style>
 </head>
-<body class="theme-default">
+<body>
 
     <header>
         <nav>
@@ -37,7 +123,6 @@
                 <img src="Изображение WhatsApp 2025-08-28 в 22.16.06_5d40c46f.jpg" alt="Logo 2" class="logo-img">
             </div>
             <ul>
-                <li><a href="#about">О нас</a></li>
                 <li><a href="#games">Наши игры</a></li>
                 <li><a href="#community">Сообщество</a></li>
             </ul>
@@ -45,27 +130,23 @@
     </header>
 
     <main>
-        <section id="hero">
-            <div class="hero-content">
-                <h1>МАХ⚙️ВИК & GAME MEF</h1>
-                <div class="dl-counter" style="margin: 100% 0; font-weight: bold; color: #e67e22;">
-                    📥 Скачиваний: <span id="count-number">0</span>
-                </div>
+        <section id="hero" style="height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <h1>МАХ⚙️ВИК & GAME MEF</h1>
+            <div class="dl-counter" style="font-size: 1.5rem; color: #e67e22;">
+                📥 Скачиваний: <span id="count-number">0</span>
             </div>
         </section>
 
         <section id="games" class="section">
-            <div class="container">
-                <h2 style="text-align:center;">Наши игры</h2>
-                <div class="game-showcase">
-                    <div class="game-card">
-                        <img src="Game.jpg" alt="5 ночей в шараге">
-                        <h3>5 ночей в шараге</h3>
-                        <p>Доступно бесплатно на всех платформах!</p>
-                        <div style="display:flex; gap:100px; justify-content:center;">
-                            <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="cta-button" onclick="countDl()">Скачать на ПК</a>
-                            <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="cta-button" onclick="countDl()">Скачать на Android</a>
-                        </div>
+            <h2 style="text-align:center;">Наши игры</h2>
+            <div class="game-showcase">
+                <div class="game-card">
+                    <img src="Game.jpg" alt="5 ночей в шараге">
+                    <h3>5 ночей в шараге</h3>
+                    <p>Доступно бесплатно на всех платформах!</p>
+                    <div style="display:flex; gap:20px; justify-content:center; flex-wrap: wrap;">
+                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="cta-button" onclick="countDl()">ПК</a>
+                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="cta-button" onclick="countDl()">Android</a>
                     </div>
                 </div>
             </div>
@@ -75,24 +156,25 @@
             <div class="container">
                 <h2>Сообщество ❄️</h2>
                 
-                <div id="auth-box" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #3498db; margin-bottom: 20px;">
-                    <div id="user-info" style="display:none; margin-bottom:10px;">
+                <div id="auth-box">
+                    <div id="user-info" style="display:none; margin-bottom:15px;">
                         Вы вошли как: <strong id="current-user-display" style="color:#3498db;"></strong> 
-                        <button onclick="logout()" style="background:#e74c3c; padding:5px 10px; margin-left:10px;">Выйти</button>
+                        <button onclick="logout()" style="background:#e74c3c; margin-left:15px;">Выйти</button>
                     </div>
-                    <div id="auth-forms">
-                        <input type="text" id="c-name" placeholder="Никнейм" style="width:30%; margin-bottom:5px;">
-                        <input type="email" id="c-email" placeholder="Почта" style="width:30%; margin-bottom:5px;">
-                        <input type="password" id="c-pass" placeholder="Пароль" style="width:30%; margin-bottom:5px;">
-                        <br>
-                        <button onclick="register()" style="background:#2ecc71;">Регистрация</button>
-                        <button onclick="login()" style="background:#3498db;">Войти</button>
+                    <div id="auth-forms" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <input type="text" id="c-name" placeholder="Никнейм" style="flex: 1; min-width: 200px;">
+                        <input type="email" id="c-email" placeholder="Почта" style="flex: 1; min-width: 200px;">
+                        <input type="password" id="c-pass" placeholder="Пароль" style="flex: 1; min-width: 200px;">
+                        <div style="width: 100%; display: flex; gap: 10px;">
+                            <button onclick="register()" style="background:#2ecc71; flex: 1;">Регистрация</button>
+                            <button onclick="login()" style="background:#3498db; flex: 1;">Войти</button>
+                        </div>
                     </div>
                 </div>
 
-                <div id="msg-input-area" style="display:none; margin-bottom:20px;">
-                    <textarea id="c-msg" placeholder="Ваш комментарий или ссылка на YouTube..." style="width:100%; height:80px;"></textarea>
-                    <button id="send-msg" class="cta-button" style="width:100%; margin-top:5px;">Опубликовать</button>
+                <div id="msg-input-area" style="display:none; margin-bottom:30px;">
+                    <textarea id="c-msg" placeholder="Ваш комментарий или ссылка на YouTube..." style="width:100%; height:100px; margin-bottom: 10px;"></textarea>
+                    <button id="send-msg" class="cta-button" style="width:100%; border: none;">Опубликовать</button>
                 </div>
                 
                 <div id="posts-wall">Загрузка сообщений...</div>
@@ -101,7 +183,7 @@
     </main>
 
     <script>
-        // Тот же конфиг
+        // FIREBASE КОНФИГ
         const firebaseConfig = {
             apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
             authDomain: "makhovicksite.firebaseapp.com",
@@ -117,41 +199,48 @@
 
         let currentUser = null;
 
-        // AUTH
+        // AUTH ФУНКЦИИ
         function register() {
             const e = document.getElementById('c-email').value;
             const p = document.getElementById('c-pass').value;
             const n = document.getElementById('c-name').value;
             if(!n) return alert("Введите ник!");
-            auth.createUserWithEmailAndPassword(e, p).then(res => res.user.updateProfile({displayName: n})).catch(a => alert(a.message));
+            auth.createUserWithEmailAndPassword(e, p)
+                .then(res => res.user.updateProfile({displayName: n}))
+                .catch(a => alert("Ошибка: " + a.message));
         }
+
         function login() {
-            auth.signInWithEmailAndPassword(document.getElementById('c-email').value, document.getElementById('c-pass').value).catch(a => alert(a.message));
+            auth.signInWithEmailAndPassword(
+                document.getElementById('c-email').value, 
+                document.getElementById('c-pass').value
+            ).catch(a => alert("Ошибка: " + a.message));
         }
+
         function logout() { auth.signOut(); }
 
         auth.onAuthStateChanged(user => {
             currentUser = user;
-            document.getElementById('auth-forms').style.display = user ? 'none' : 'block';
+            document.getElementById('auth-forms').style.display = user ? 'none' : 'flex';
             document.getElementById('user-info').style.display = user ? 'block' : 'none';
             document.getElementById('msg-input-area').style.display = user ? 'block' : 'none';
             if(user) document.getElementById('current-user-display').innerText = user.displayName;
         });
 
-        // Видео
+        // ПАРСИНГ ВИДЕО
         function parseVideo(t) {
             const m = t.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-            return m ? `<br><iframe width="100%" height="250" src="https://www.youtube.com/embed/${m[1]}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
+            return m ? `<br><iframe width="100%" height="350" src="https://www.youtube.com/embed/${m[1]}" frameborder="0" allowfullscreen style="margin-top:15px; border-radius:10px;"></iframe>` : "";
         }
 
-        // Лайки с защитой (можно убрать)
+        // ЛАЙКИ
         window.toggleVote = function(path, type) {
-            if(!currentUser) return alert("Войдите!");
+            if(!currentUser) return alert("Войдите в аккаунт!");
             const ref = db.ref(path + '/votes/' + currentUser.uid);
             ref.once('value', s => s.val() === type ? ref.remove() : ref.set(type));
         };
 
-        // Ответы на ответы
+        // ОТВЕТЫ
         window.sendReply = function(parentId, targetName) {
             const t = document.getElementById('r-msg-' + parentId).value;
             if(t && currentUser) {
@@ -170,20 +259,27 @@
             el.style.display = el.style.display === 'none' ? 'block' : 'none';
         };
 
-        // Главный пост
+        // ГЛАВНЫЙ ПОСТ
         document.getElementById('send-msg').onclick = () => {
             const t = document.getElementById('c-msg').value;
             if(t && currentUser) {
-                db.ref('posts').push({ uid: currentUser.uid, n: currentUser.displayName, t, time: new Date().toLocaleString() });
+                db.ref('posts').push({ 
+                    uid: currentUser.uid, 
+                    n: currentUser.displayName, 
+                    t, 
+                    time: new Date().toLocaleString() 
+                });
                 document.getElementById('c-msg').value = '';
             }
         };
 
-        // Отрисовка
+        // ОБНОВЛЕНИЕ СТЕНЫ
         db.ref('posts').on('value', snap => {
             const wall = document.getElementById('posts-wall');
             wall.innerHTML = '';
             const data = snap.val();
+            if(!data) { wall.innerHTML = "Сообщений пока нет..."; return; }
+            
             for(let id in data) {
                 const p = data[id];
                 const votes = p.votes || {};
@@ -192,17 +288,18 @@
                 const myV = currentUser ? votes[currentUser.uid] : null;
 
                 let html = `
-                    <div class="post" style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #e67e22; color:white;">
-                        <strong>${p.n}</strong> <small style="opacity:0.5;">${p.time}</small>
-                        <p>${p.t}${parseVideo(p.t)}</p>
+                    <div class="post">
+                        <strong style="color: #e67e22; font-size: 1.1rem;">${p.n}</strong> 
+                        <small style="opacity:0.5; margin-left: 10px;">${p.time}</small>
+                        <p style="margin: 15px 0;">${p.t}${parseVideo(p.t)}</p>
                         <div style="display:flex; gap:10px;">
                             <button onclick="toggleVote('posts/${id}', 'up')" class="${myV==='up'?'vote-active-up':''}">👍 ${up}</button>
                             <button onclick="toggleVote('posts/${id}', 'down')" class="${myV==='down'?'vote-active-down':''}">👎 ${down}</button>
-                            <button onclick="openReply('${id}')">Ответить</button>
+                            <button onclick="openReply('${id}')" style="background: transparent; border: 1px solid #3498db;">Ответить</button>
                         </div>
-                        <div id="re-form-${id}" style="display:none; margin-top:10px;">
-                            <textarea id="r-msg-${id}" placeholder="Ваш ответ..." style="width:100%; background:#444; color:#fff;"></textarea>
-                            <button onclick="sendReply('${id}', '${p.n}')" style="margin-top:5px; background:#2ecc71;">Отправить ответ</button>
+                        <div id="re-form-${id}" style="display:none; margin-top:15px;">
+                            <textarea id="r-msg-${id}" placeholder="Ваш ответ..." style="width:100%; height:60px;"></textarea>
+                            <button onclick="sendReply('${id}', '${p.n}')" style="margin-top:5px; background:#2ecc71; width: 100%;">Отправить</button>
                         </div>
                         <div class="reply-block">
                 `;
@@ -216,12 +313,12 @@
                         const myRV = currentUser ? rVotes[currentUser.uid] : null;
 
                         html += `
-                            <div style="margin-bottom:10px; padding:5px; background:rgba(255,255,255,0.03); border-radius:5px;">
-                                <strong>${r.n}</strong>: ${r.t}
-                                <div style="display:flex; gap:10px; margin-top:5px; font-size:0.8em;">
-                                    <button onclick="toggleVote('posts/${id}/replies/${rid}', 'up')" class="${myRV==='up'?'vote-active-up':''}">👍 ${rUp}</button>
-                                    <button onclick="toggleVote('posts/${id}/replies/${rid}', 'down')" class="${myRV==='down'?'vote-active-down':''}">👎 ${rDown}</button>
-                                    <button onclick="openReply('${id}')">Ответить ещё</button>
+                            <div style="margin-bottom:15px; padding:10px; background:rgba(255,255,255,0.03); border-radius:10px;">
+                                <strong style="color: #3498db;">${r.n}</strong>: ${r.t}
+                                <div style="display:flex; gap:10px; margin-top:10px; font-size:0.8em;">
+                                    <button onclick="toggleVote('posts/${id}/replies/${rid}', 'up')" class="${myRV==='up'?'vote-active-up':''}" style="padding: 3px 8px;">👍 ${rUp}</button>
+                                    <button onclick="toggleVote('posts/${id}/replies/${rid}', 'down')" class="${myRV==='down'?'vote-active-down':''}" style="padding: 3px 8px;">👎 ${rDown}</button>
+                                    <button onclick="openReply('${id}')" style="padding: 3px 8px; background: transparent;">Ответить ещё</button>
                                 </div>
                             </div>
                         `;
@@ -232,7 +329,7 @@
             }
         });
 
-        // Счётчик и Снег
+        // СЧЁТЧИК И СНЕГ
         const countRef = db.ref('downloads/total');
         countRef.on('value', s => document.getElementById('count-number').innerText = s.val() || 0);
         function countDl() { countRef.transaction(c => (c || 0) + 1); }
@@ -247,6 +344,3 @@
     </script>
 </body>
 </html>
-
-
-

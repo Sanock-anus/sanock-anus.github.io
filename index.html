@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body class="theme-default">
 
@@ -21,7 +22,6 @@
                 <li><a href="#about">О нас</a></li>
                 <li><a href="#games">Наши игры</a></li>
                 <li><a href="#community">Сообщество</a></li>
-                <li><a href="#contact">Контакты</a></li>
             </ul>
         </nav>
     </header>
@@ -29,40 +29,21 @@
     <main>
         <section id="hero">
             <div class="hero-content">
-                <h1>Приветствуем! Мы - МАХ⚙️ВИК & GAME MEF</h1>
-                <p>Мы создаём игры. Почти все наши игры будут бесплатными.</p>
+                <h1>МАХ⚙️ВИК & GAME MEF</h1>
                 <div class="dl-counter" style="margin: 15px 0; font-weight: bold; color: #e67e22;">
                     📥 Скачиваний: <span id="count-number">0</span>
-                </div>
-                <a href="#games" class="cta-button">играть!</a>
-            </div>
-        </section>
-
-        <section id="about" class="section">
-            <div class="container">
-                <h2>О нас</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>МАХ⚙️ВИК & GAME MEF — это команда энтузиастов, увлеченных созданием игр. Мы верим, что качественные игры должны быть доступны каждому.</p>
-                    </div>
-                    <div class="about-logo">
-                        <img src="МАХ⚙️ВИКANDGAMEMEF.png" alt="МАХ⚙️ВИК и GAME MEF" style="max-width: 300px; border-radius: 10px;">
-                    </div>
                 </div>
             </div>
         </section>
 
         <section id="games" class="section">
-            <div class="container">
+            <div class="container" style="text-align:center;">
                 <h2>Наши игры</h2>
-                <div class="game-showcase">
-                    <div class="game-card">
-                        <img src="Game.jpg" alt="5 ночей в шараге" style="max-width: 100%; border-radius: 10px;">
-                        <h3>5 ночей в шараге</h3>
-                        <p>Эта игра доступна бесплатно!</p>
-                        <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="cta-button" onclick="countDl()">Скачать на ПК</a>
-                        <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="cta-button" onclick="countDl()">Скачать на Android</a>
-                    </div>
+                <div class="game-card" style="background:#2c3e50; padding:20px; border-radius:15px; display:inline-block;">
+                    <img src="Game.jpg" alt="5 ночей в шараге" style="max-width: 200px; border-radius: 10px;">
+                    <h3>5 ночей в шараге</h3>
+                    <a href="https://drive.google.com/file/d/1DpQU2blWeWgafjGmtvx7WU4kW8iIUcTY/view" class="cta-button" onclick="countDl()">ПК</a>
+                    <a href="https://drive.google.com/file/d/1a0cGmqNwIjfC5tUsAgG4hSO4xOG0aSYf/view" class="cta-button" onclick="countDl()">Android</a>
                 </div>
             </div>
         </section>
@@ -70,11 +51,26 @@
         <section id="community" class="section">
             <div class="container">
                 <h2>Сообщество ❄️</h2>
-                <div class="comm-input-area" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #e67e22; margin-bottom: 20px;">
-                    <input type="text" id="c-name" placeholder="Ваше имя" style="width:100%; margin-bottom:10px; padding:8px; border-radius:5px; background:#333; color:#fff; border:1px solid #444;">
-                    <textarea id="c-msg" placeholder="Ваш комментарий или ссылка на видео..." style="width:100%; height:80px; margin-bottom:10px; padding:8px; border-radius:5px; background:#333; color:#fff; border:1px solid #444;"></textarea>
+                
+                <div id="auth-box" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #3498db; margin-bottom: 20px; text-align: left;">
+                    <div id="user-info" style="display:none; margin-bottom:10px;">
+                        Вы вошли как: <strong id="current-user-display" style="color:#3498db;"></strong> 
+                        <button onclick="logout()" style="background:#e74c3c; padding:3px 10px; font-size:0.8em;">Выйти</button>
+                    </div>
+                    <div id="auth-forms">
+                        <input type="text" id="c-name" placeholder="Никнейм" style="width:48%; margin-bottom:10px; padding:8px; background:#333; color:#fff; border:1px solid #444;">
+                        <input type="email" id="c-email" placeholder="Почта" style="width:48%; margin-bottom:10px; padding:8px; background:#333; color:#fff; border:1px solid #444;">
+                        <input type="password" id="c-pass" placeholder="Пароль" style="width:100%; margin-bottom:10px; padding:8px; background:#333; color:#fff; border:1px solid #444;">
+                        <button onclick="register()" class="cta-button" style="background:#2ecc71;">Регистрация</button>
+                        <button onclick="login()" class="cta-button" style="background:#3498db;">Войти</button>
+                    </div>
+                </div>
+
+                <div id="msg-input-area" style="display:none; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #e67e22; margin-bottom: 20px;">
+                    <textarea id="c-msg" placeholder="Ваш комментарий..." style="width:100%; height:80px; margin-bottom:10px; padding:8px; border-radius:5px; background:#333; color:#fff; border:1px solid #444;"></textarea>
                     <button id="send-msg" class="cta-button">Опубликовать</button>
                 </div>
+                
                 <div id="posts-wall">Загрузка сообщений...</div>
             </div>
         </section>
@@ -92,128 +88,117 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const auth = firebase.auth();
 
-        // Проверка ника админа
-        function checkAdmin(name) {
-            if(name === "МАХ⚙️ВИК-админ") {
-                const mail = prompt("Введите почту администратора:");
-                if(mail !== "sanokgameplay@gmail.com") {
-                    alert("Доступ запрещен!");
-                    document.getElementById('c-name').value = "";
-                    return "Аноним";
-                }
-            }
-            return name || "Аноним";
+        let currentUser = null;
+
+        // --- ЛОГИКА АККАУНТОВ ---
+        function register() {
+            const email = document.getElementById('c-email').value;
+            const pass = document.getElementById('c-pass').value;
+            const name = document.getElementById('c-name').value;
+            if(!name) return alert("Введите ник!");
+            
+            auth.createUserWithEmailAndPassword(email, pass)
+                .then((userCredential) => {
+                    userCredential.user.updateProfile({ displayName: name });
+                    alert("Регистрация успешна!");
+                }).catch(err => alert(err.message));
         }
 
-        // Парсер видео YouTube
+        function login() {
+            const email = document.getElementById('c-email').value;
+            const pass = document.getElementById('c-pass').value;
+            auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+        }
+
+        function logout() { auth.signOut(); }
+
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            const authForms = document.getElementById('auth-forms');
+            const userInfo = document.getElementById('user-info');
+            const msgInput = document.getElementById('msg-input-area');
+            
+            if(user) {
+                authForms.style.display = 'none';
+                userInfo.style.display = 'block';
+                msgInput.style.display = 'block';
+                document.getElementById('current-user-display').innerText = user.displayName || user.email;
+            } else {
+                authForms.style.display = 'block';
+                userInfo.style.display = 'none';
+                msgInput.style.display = 'none';
+            }
+        });
+
+        // --- ЛАЙКИ И КОММЕНТЫ ---
         function parseVideo(text) {
             const ytReg = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
             const match = text.match(ytReg);
-            return match ? `<br><iframe width="100%" height="200" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen style="margin-top:10px; border-radius:5px;"></iframe>` : "";
+            return match ? `<br><iframe width="100%" height="200" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen style="margin-top:10px;"></iframe>` : "";
         }
 
-        // Лайки/Дизлайки (универсальный путь)
-        window.vote = function(path) {
-            db.ref(path).transaction(c => (c || 0) + 1);
-        };
-
-        // Открытие формы ответа
-        window.openReplyForm = function(id, targetName) {
-            const f = document.getElementById('reply-form-' + id);
-            const area = document.getElementById('r-msg-' + id);
-            f.style.display = f.style.display === 'none' ? 'block' : 'none';
-            if(targetName) {
-                area.value = `@${targetName}, `;
-                area.focus();
-            }
-        };
-
-        // Отправка ответа
-        window.sendReply = function(parentId) {
-            let n = document.getElementById('c-name').value;
-            if(!n) { alert("Сначала введите свой ник в поле имени выше!"); return; }
-            n = checkAdmin(n);
+        window.toggleVote = function(id, type) {
+            if(!currentUser) return alert("Войдите в аккаунт!");
+            const userId = currentUser.uid;
+            const voteRef = db.ref(`posts/${id}/votes/${userId}`);
             
-            const t = document.getElementById('r-msg-' + parentId).value;
-            if(t) {
-                db.ref(`posts/${parentId}/replies`).push({
-                    n, t, time: new Date().toLocaleString(), likes: 0, dislikes: 0
-                });
-                document.getElementById('r-msg-' + parentId).value = '';
-                document.getElementById('reply-form-' + parentId).style.display = 'none';
-            }
+            voteRef.once('value', snap => {
+                if(snap.val() === type) {
+                    voteRef.remove(); // Убираем лайк, если нажали второй раз
+                } else {
+                    voteRef.set(type); // Ставим или меняем лайк/дизлайк
+                }
+            });
         };
 
-        // Скрыть/показать ветку ответов
-        window.toggleReplies = function(id) {
-            const b = document.getElementById('reply-box-' + id);
-            b.style.display = b.style.display === 'none' ? 'block' : 'none';
+        window.deletePost = function(id) {
+            if(confirm("Удалить сообщение?")) db.ref(`posts/${id}`).remove();
         };
 
-        // Публикация главного сообщения
         document.getElementById('send-msg').onclick = () => {
-            let n = document.getElementById('c-name').value;
-            n = checkAdmin(n);
             const t = document.getElementById('c-msg').value;
-            if(t) {
-                db.ref('posts').push({ n, t, time: new Date().toLocaleString(), likes: 0, dislikes: 0 });
+            if(t && currentUser) {
+                db.ref('posts').push({
+                    uid: currentUser.uid,
+                    n: currentUser.displayName || "Аноним",
+                    t, 
+                    time: new Date().toLocaleString()
+                });
                 document.getElementById('c-msg').value = '';
             }
         };
 
-        // Отрисовка сообщений
         db.ref('posts').on('value', snap => {
             const wall = document.getElementById('posts-wall');
             wall.innerHTML = '';
             const data = snap.val();
             for(let id in data) {
                 const p = data[id];
-                const video = parseVideo(p.t);
-                const rCount = p.replies ? Object.keys(p.replies).length : 0;
+                const votes = p.votes || {};
+                const likes = Object.values(votes).filter(v => v === 'up').length;
+                const dislikes = Object.values(votes).filter(v => v === 'down').length;
+                const myVote = currentUser ? votes[currentUser.uid] : null;
                 
+                const isOwner = currentUser && (currentUser.uid === p.uid || currentUser.email === 'sanokgameplay@gmail.com');
+
                 let html = `
-                    <div style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #e67e22; color:white; text-align:left;">
+                    <div style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #e67e22; color:white;">
                         <div style="display:flex; justify-content:space-between;">
                             <strong style="color:#e67e22;">${p.n}</strong>
-                            <small style="opacity:0.5;">${p.time}</small>
-                        </div>
-                        <p>${p.t}${video}</p>
-                        <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button onclick="vote('posts/${id}/likes')" style="background:none; border:none; color:#2ecc71; cursor:pointer;">👍 ${p.likes || 0}</button>
-                            <button onclick="vote('posts/${id}/dislikes')" style="background:none; border:none; color:#e74c3c; cursor:pointer;">👎 ${p.dislikes || 0}</button>
-                            <button onclick="openReplyForm('${id}', '${p.n}')" style="background:#e67e22; border:none; color:white; padding:5px 10px; border-radius:5px; cursor:pointer;">Ответить</button>
-                            ${rCount ? `<button onclick="toggleReplies('${id}')" style="background:#3498db; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; color:white;">Ответы (${rCount})</button>` : ''}
-                        </div>
-
-                        <div id="reply-form-${id}" style="display:none; margin-top:10px;">
-                            <textarea id="r-msg-${id}" style="width:100%; background:#444; color:#fff; border-radius:5px; padding:5px; min-height:50px; border:1px solid #666;"></textarea>
-                            <button onclick="sendReply('${id}')" style="margin-top:5px; background:#2ecc71; color:white; border:none; padding:5px 15px; border-radius:5px; cursor:pointer;">Отправить</button>
-                        </div>
-
-                        <div id="reply-box-${id}" style="display:none; margin-left:25px; margin-top:15px; border-left:2px dashed #e67e22; padding-left:15px;">
-                `;
-
-                if(p.replies) {
-                    for(let rId in p.replies) {
-                        const r = p.replies[rId];
-                        html += `
-                            <div style="margin-bottom:12px; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; border-left:2px solid #3498db;">
-                                <div style="display:flex; justify-content:space-between; font-size:0.85em;">
-                                    <strong style="color:#3498db;">${r.n}</strong>
-                                    <small style="opacity:0.5;">${r.time}</small>
-                                </div>
-                                <div style="margin:5px 0; word-wrap: break-word;">${r.t}</div>
-                                <div style="display:flex; gap:10px;">
-                                    <button onclick="vote('posts/${id}/replies/${rId}/likes')" style="background:none; border:none; color:#2ecc71; cursor:pointer; font-size:0.9em;">👍 ${r.likes || 0}</button>
-                                    <button onclick="vote('posts/${id}/replies/${rId}/dislikes')" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:0.9em;">👎 ${r.dislikes || 0}</button>
-                                    <button onclick="openReplyForm('${id}', '${r.n}')" style="background:none; border:none; color:#e67e22; cursor:pointer; font-size:0.9em; text-decoration:underline;">Ответить</button>
-                                </div>
+                            <div>
+                                ${isOwner ? `<button onclick="deletePost('${id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer; margin-right:10px;">🗑</button>` : ''}
+                                <small style="opacity:0.5;">${p.time}</small>
                             </div>
-                        `;
-                    }
-                }
-                html += `</div></div>`;
+                        </div>
+                        <p>${p.t}${parseVideo(p.t)}</p>
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="toggleVote('${id}', 'up')" style="background:none; border:none; color:${myVote==='up'?'#2ecc71':'#888'}; cursor:pointer;">👍 ${likes}</button>
+                            <button onclick="toggleVote('${id}', 'down')" style="background:none; border:none; color:${myVote==='down'?'#e74c3c':'#888'}; cursor:pointer;">👎 ${dislikes}</button>
+                        </div>
+                    </div>
+                `;
                 wall.insertAdjacentHTML('afterbegin', html);
             }
         });
@@ -221,12 +206,7 @@
         // Счётчик скачиваний
         const countRef = db.ref('downloads/total');
         countRef.on('value', (s) => document.getElementById('count-number').innerText = s.val() || 0);
-        function countDl() {
-            if (!localStorage.getItem('did_dl')) {
-                countRef.transaction(c => (c || 0) + 1);
-                localStorage.setItem('did_dl', 'true');
-            }
-        }
+        function countDl() { countRef.transaction(c => (c || 0) + 1); }
 
         // Снег
         setInterval(() => {

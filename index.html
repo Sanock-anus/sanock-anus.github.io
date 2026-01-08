@@ -1,145 +1,200 @@
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
-        authDomain: "makhovicksite.firebaseapp.com",
-        projectId: "makhovicksite",
-        storageBucket: "makhovicksite.firebasestorage.app",
-        messagingSenderId: "245142284614",
-        appId: "1:245142284614:web:fd01f94ef372ebc0ad1d47",
-        databaseURL: "https://makhovicksite-default-rtdb.firebaseio.com"
-    };
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="yandex-verification" content="0ff9479251bdef9d" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МАХ⚙️ВИК & GAME MEF</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: sans-serif; margin: 0; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        header { background: #222; padding: 10px; text-align: center; border-bottom: 2px solid #e67e22; }
+        .logo-img { height: 50px; margin: 0 10px; border-radius: 5px; }
+        .cta-button, button { background: #e67e22; border: none; color: white; padding: 10px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .cta-button:hover, button:hover { background: #d35400; }
+        input, textarea { background: #333; border: 1px solid #444; color: white; padding: 10px; border-radius: 5px; width: 100%; box-sizing: border-box; }
+        .post { background: #2c3e50; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #e67e22; }
+        .reply { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em; border-left: 2px solid #555; }
+        .vote-btn { background: none; border: none; cursor: pointer; color: #aaa; margin-right: 10px; padding: 5px; }
+        .vote-btn:hover { color: #fff; }
+        @keyframes fall { to { transform: translateY(105vh); } }
+    </style>
+</head>
+<body class="theme-default">
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="МАХ⚙️ВИК.png" alt="Лого" class="logo-img">
+                <img src="Изображение WhatsApp 2025-08-28 в 22.16.06_5d40c46f.jpg" alt="Logo 2" class="logo-img">
+            </div>
+            <ul style="list-style: none; display: flex; justify-content: center; gap: 20px; padding: 10px;">
+                <li><a href="#about" style="color:white; text-decoration:none;">О нас</a></li>
+                <li><a href="#games" style="color:white; text-decoration:none;">Игры</a></li>
+                <li><a href="#community" style="color:white; text-decoration:none;">Сообщество</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    // Проверка админа
-    document.getElementById('c-name').onchange = function() {
-        if(this.value === "МАХ⚙️ВИК-админ") {
-            const mail = prompt("Введите почту администратора:");
-            if(mail !== "sanokgameplay@gmail.com") {
-                alert("Доступ запрещен!");
-                this.value = "";
-            }
-        }
-    };
+    <main class="container">
+        <section id="hero" style="text-align:center; padding: 40px 0;">
+            <h1>МАХ⚙️ВИК & GAME MEF</h1>
+            <p>Мы создаём игры. Почти все они бесплатные.</p>
+            <div style="font-size: 1.2em; color: #e67e22; margin: 20px 0;">
+                📥 Скачиваний: <span id="count-number">0</span>
+            </div>
+            <a href="#games" class="cta-button">ИГРАТЬ!</a>
+        </section>
 
-    // Парсер видео
-    function parseVideo(text) {
-        const ytReg = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-        const match = text.match(ytReg);
-        return match ? `<br><iframe width="100%" height="200" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen></iframe>` : "";
-    }
+        <section id="community">
+            <h2>Сообщество ❄️</h2>
+            <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid #e67e22; margin-bottom: 30px;">
+                <input type="text" id="c-name" placeholder="Ваше имя" style="margin-bottom:10px;">
+                <textarea id="c-msg" placeholder="Комментарий или ссылка на видео..." style="margin-bottom:10px;"></textarea>
+                <button id="send-msg" style="width:100%;">Опубликовать</button>
+            </div>
+            <div id="posts-wall">Загрузка сообщений...</div>
+        </section>
+    </main>
 
-    // Голосование
-    function vote(id, type, isReply = false, parentId = null) {
-        let path = isReply ? `posts/${parentId}/replies/${id}/${type}` : `posts/${id}/${type}`;
-        db.ref(path).transaction(c => (c || 0) + 1);
-    }
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcQP8-B9zt_dKdj2Ns99H6aaqzQb8OnLc",
+            authDomain: "makhovicksite.firebaseapp.com",
+            projectId: "makhovicksite",
+            storageBucket: "makhovicksite.firebasestorage.app",
+            messagingSenderId: "245142284614",
+            appId: "1:245142284614:web:fd01f94ef372ebc0ad1d47",
+            databaseURL: "https://makhovicksite-default-rtdb.firebaseio.com"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-    // Функция ответа (вызывает форму)
-    let currentReplyId = null;
-    function openReplyForm(id) {
-        const form = document.getElementById('reply-form-' + id);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
-    }
-
-    // Отправка ответа в базу
-    function sendReply(parentId) {
-        const n = document.getElementById('c-name').value || "Аноним";
-        const t = document.getElementById('r-msg-' + parentId).value;
-        if(t) {
-            db.ref(`posts/${parentId}/replies`).push({
-                n, t, 
-                time: new Date().toLocaleString(),
-                likes: 0, dislikes: 0
-            });
-            document.getElementById('r-msg-' + parentId).value = '';
-            openReplyForm(parentId);
-        }
-    }
-
-    // Переключатель видимости ответов
-    function toggleReplies(id) {
-        const box = document.getElementById('reply-box-' + id);
-        box.style.display = box.style.display === 'none' ? 'block' : 'none';
-    }
-
-    // Отправка главного поста
-    document.getElementById('send-msg').onclick = () => {
-        const n = document.getElementById('c-name').value;
-        const t = document.getElementById('c-msg').value;
-        if(n && t) {
-            db.ref('posts').push({
-                n, t, time: new Date().toLocaleString(),
-                likes: 0, dislikes: 0
-            });
-            document.getElementById('c-msg').value = '';
-        }
-    };
-
-    // Отрисовка
-    db.ref('posts').on('value', snap => {
-        const wall = document.getElementById('posts-wall');
-        wall.innerHTML = '';
-        const data = snap.val();
-        for(let id in data) {
-            const p = data[id];
-            const videoHtml = parseVideo(p.t);
-            const hasReplies = p.replies ? Object.keys(p.replies).length : 0;
-            
-            let postHtml = `
-                <div class="post" style="background:#2c3e50; padding:15px; border-radius:10px; margin-bottom:10px; border-left:4px solid #e67e22; color:white;">
-                    <div style="display:flex; justify-content:space-between;"><strong>${p.n}</strong><small>${p.time}</small></div>
-                    <p>${p.t}${videoHtml}</p>
-                    <div style="display:flex; gap:10px;">
-                        <button onclick="vote('${id}', 'likes')">👍 ${p.likes || 0}</button>
-                        <button onclick="vote('${id}', 'dislikes')">👎 ${p.dislikes || 0}</button>
-                        <button onclick="openReplyForm('${id}')">Ответить</button>
-                        ${hasReplies ? `<button onclick="toggleReplies('${id}')" style="color:#f1c40f;">Ответы (${hasReplies})</button>` : ''}
-                    </div>
-                    
-                    <div id="reply-form-${id}" style="display:none; margin-top:10px;">
-                        <textarea id="r-msg-${id}" placeholder="Ваш ответ..." style="width:100%; background:#444; color:#fff; border-radius:5px; padding:5px;"></textarea>
-                        <button onclick="sendReply('${id}')" style="margin-top:5px;">Отправить ответ</button>
-                    </div>
-
-                    <div id="reply-box-${id}" style="display:none; margin-left:40px; margin-top:10px; border-left:2px dashed #555; padding-left:10px;">
-            `;
-
-            if(p.replies) {
-                for(let rId in p.replies) {
-                    const r = p.replies[rId];
-                    postHtml += `
-                        <div class="reply" style="margin-bottom:10px; font-size:0.9em; background:rgba(255,255,255,0.05); padding:8px; border-radius:5px;">
-                            <strong>${r.n}</strong>: ${r.t}
-                            <div style="margin-top:5px;">
-                                <button onclick="vote('${rId}', 'likes', true, '${id}')">👍 ${r.likes || 0}</button>
-                                <button onclick="vote('${rId}', 'dislikes', true, '${id}')">👎 ${r.dislikes || 0}</button>
-                            </div>
-                        </div>
-                    `;
+        // Проверка админа
+        document.getElementById('c-name').onchange = function() {
+            if(this.value === "МАХ⚙️ВИК-админ") {
+                const mail = prompt("Введите почту администратора:");
+                if(mail !== "sanokgameplay@gmail.com") {
+                    alert("Доступ запрещен!");
+                    this.value = "";
                 }
             }
+        };
 
-            postHtml += `</div></div>`;
-            wall.insertAdjacentHTML('afterbegin', postHtml);
+        // Видео парсер
+        function parseVideo(text) {
+            const ytReg = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const match = text.match(ytReg);
+            return match ? `<br><iframe width="100%" height="315" src="https://www.youtube.com/embed/${match[1]}" frameborder="0" allowfullscreen style="margin-top:10px; border-radius:10px;"></iframe>` : "";
         }
-    });
 
-    // Счётчик и Снег (оставь как было)
-    const countRef = db.ref('downloads/total');
-    countRef.on('value', (s) => document.getElementById('count-number').innerText = s.val() || 0);
-    function countDl() {
-        if (!localStorage.getItem('did_dl')) {
-            countRef.transaction(c => (c || 0) + 1);
-            localStorage.setItem('did_dl', 'true');
-        }
-    }
-    setInterval(() => {
-        const s = document.createElement('div');
-        s.innerHTML = '❄';
-        s.style.cssText = `position:fixed; top:-20px; color:white; pointer-events:none; left:${Math.random()*100}vw; animation: fall ${Math.random()*3+2}s linear forwards; z-index:9999;`;
-        document.body.appendChild(s);
-        setTimeout(() => s.remove(), 5000);
-    }, 300);
-</script>
+        // Лайки
+        window.vote = function(id, type, isReply = false, parentId = null) {
+            let path = isReply ? `posts/${parentId}/replies/${id}/${type}` : `posts/${id}/${type}`;
+            db.ref(path).transaction(c => (c || 0) + 1);
+        };
+
+        // Ответы
+        window.openReplyForm = function(id) {
+            const el = document.getElementById('reply-form-' + id);
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        };
+
+        window.sendReply = function(parentId) {
+            const n = document.getElementById('c-name').value || "Аноним";
+            const t = document.getElementById('r-msg-' + parentId).value;
+            if(t) {
+                db.ref(`posts/${parentId}/replies`).push({
+                    n, t, time: new Date().toLocaleString(), likes: 0, dislikes: 0
+                });
+                document.getElementById('r-msg-' + parentId).value = '';
+                openReplyForm(parentId);
+            }
+        };
+
+        window.toggleReplies = function(id) {
+            const box = document.getElementById('reply-box-' + id);
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // Главный пост
+        document.getElementById('send-msg').onclick = () => {
+            const n = document.getElementById('c-name').value || "Аноним";
+            const t = document.getElementById('c-msg').value;
+            if(t) {
+                db.ref('posts').push({ n, t, time: new Date().toLocaleString(), likes: 0, dislikes: 0 });
+                document.getElementById('c-msg').value = '';
+            }
+        };
+
+        // Отрисовка
+        db.ref('posts').on('value', snap => {
+            const wall = document.getElementById('posts-wall');
+            wall.innerHTML = '';
+            const data = snap.val();
+            if(!data) { wall.innerHTML = 'Сообщений пока нет.'; return; }
+
+            for(let id in data) {
+                const p = data[id];
+                const videoHtml = parseVideo(p.t);
+                const replyCount = p.replies ? Object.keys(p.replies).length : 0;
+                
+                let postHtml = `
+                    <div class="post">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <strong style="color:#e67e22;">${p.n}</strong>
+                            <small style="opacity:0.6;">${p.time}</small>
+                        </div>
+                        <div style="word-wrap: break-word;">${p.t}${videoHtml}</div>
+                        <div style="margin-top:15px; display:flex; gap:10px;">
+                            <button class="vote-btn" onclick="vote('${id}', 'likes')">👍 ${p.likes || 0}</button>
+                            <button class="vote-btn" onclick="vote('${id}', 'dislikes')">👎 ${p.dislikes || 0}</button>
+                            <button onclick="openReplyForm('${id}')" style="background:#34495e;">Ответить</button>
+                            ${replyCount ? `<button onclick="toggleReplies('${id}')" style="background:#f1c40f; color:#000;">Ответы (${replyCount})</button>` : ''}
+                        </div>
+                        
+                        <div id="reply-form-${id}" style="display:none; margin-top:15px;">
+                            <textarea id="r-msg-${id}" placeholder="Ваш ответ..."></textarea>
+                            <button onclick="sendReply('${id}')" style="margin-top:5px; width:100%;">Отправить</button>
+                        </div>
+
+                        <div id="reply-box-${id}" style="display:none; margin-left:30px; border-left: 2px solid #e67e22; padding-left:15px; margin-top:15px;">
+                `;
+
+                if(p.replies) {
+                    for(let rId in p.replies) {
+                        const r = p.replies[rId];
+                        postHtml += `
+                            <div class="reply">
+                                <strong>${r.n}</strong>: ${r.t}
+                                <div style="margin-top:5px;">
+                                    <button class="vote-btn" onclick="vote('${rId}', 'likes', true, '${id}')">👍 ${r.likes || 0}</button>
+                                    <button class="vote-btn" onclick="vote('${rId}', 'dislikes', true, '${id}')">👎 ${r.dislikes || 0}</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                postHtml += `</div></div>`;
+                wall.insertAdjacentHTML('afterbegin', postHtml);
+            }
+        });
+
+        // Счётчик скачиваний
+        const countRef = db.ref('downloads/total');
+        countRef.on('value', (s) => document.getElementById('count-number').innerText = s.val() || 0);
+
+        // Снег
+        setInterval(() => {
+            const s = document.createElement('div');
+            s.innerHTML = '❄';
+            s.style.cssText = `position:fixed; top:-20px; color:white; pointer-events:none; left:${Math.random()*100}vw; animation: fall ${Math.random()*3+2}s linear forwards; z-index:9999;`;
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 5000);
+        }, 300);
+    </script>
+</body>
+</html>
